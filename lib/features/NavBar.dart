@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:qcu/cosntants/colors.dart';
-import 'package:qcu/features/home/HomeView.dart';
+
+import 'Users/home/HomeView.dart';
+import 'Users/mall/MallView.dart';
+import 'Users/notifications/NotifView.dart';
+import 'Users/profile/ProfileView.dart';
 
 class AppNavBar extends ConsumerStatefulWidget {
   const AppNavBar({
@@ -20,12 +24,9 @@ class _AppNavBarState extends ConsumerState<AppNavBar> {
   List<Widget> _buildScreens() {
     return [
       const HomeView(),
-      Container(
-        color: Colors.white,
-        child: const Center(
-          child: Text("Settings"),
-        ),
-      ),
+      const MallView(),
+      const NotifView(),
+      const ProfileView()
     ];
   }
 
@@ -39,8 +40,20 @@ class _AppNavBarState extends ConsumerState<AppNavBar> {
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.settings),
-        title: ("Settings"),
+        icon: const Icon(CupertinoIcons.bag),
+        title: ("QCU Mall"),
+        activeColorPrimary: AppColors().primary,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(CupertinoIcons.bell),
+        title: ("Notification"),
+        activeColorPrimary: AppColors().primary,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(CupertinoIcons.person),
+        title: ("Profile"),
         activeColorPrimary: AppColors().primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),

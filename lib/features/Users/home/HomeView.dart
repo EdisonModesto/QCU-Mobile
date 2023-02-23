@@ -14,6 +14,9 @@ class HomeView extends ConsumerStatefulWidget {
 }
 
 class _HomeViewState extends ConsumerState<HomeView> {
+
+  TextEditingController searchCtrl = TextEditingController();
+
   var cat = [
     Icons.emoji_food_beverage_outlined,
     Icons.shopping_cart_outlined,
@@ -49,7 +52,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * 0.8,
       child: Column(
         children: [
@@ -95,66 +98,68 @@ class _HomeViewState extends ConsumerState<HomeView> {
               ],
             ),
           ),
-          const SizedBox(height: 40,),
-          Container(
-            height: 125,
-            width: MediaQuery.of(context).size.width,
-            color: AppColors().primary,
-            child: Stack(
-              children: [
-                Center(
-                  child: Text(
-                    "Voucher Carousel",
-                    style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                OverflowBox(
-                  child: Transform.translate(
-                    offset: const Offset(0, -60),
-                    child: Container(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(left: 20, right: 20),
-                          filled: true,
-                          fillColor: Colors.white,
-                          hintText: "Search",
-                          hintStyle: GoogleFonts.poppins(
-                              fontSize: 14,
-                              color: AppColors().black
-                          ),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: AppColors().primary,
-                                width: 2,
-                              )
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: AppColors().primary,
-                                width: 2,
-                              )
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
+          const SizedBox(height: 17,),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 23),
+                    height: 125,
+                    width: MediaQuery.of(context).size.width,
+                    color: AppColors().primary,
+                    child: Stack(
+                      children: [
+                        Center(
+                          child: Text(
+                            "Voucher Carousel",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        OverflowBox(
+                          child: Transform.translate(
+                            offset: const Offset(0, -60),
+                            child: Container(
+                              height: 50,
+                              width: MediaQuery.of(context).size.width,
+                              padding: const EdgeInsets.symmetric(horizontal: 40),
+                              child: TextField(
+                                controller: searchCtrl,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.only(left: 20, right: 20),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  hintText: "Search",
+                                  hintStyle: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      color: AppColors().black
+                                  ),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      borderSide: BorderSide(
+                                        color: AppColors().primary,
+                                        width: 2,
+                                      )
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      borderSide: BorderSide(
+                                        color: AppColors().primary,
+                                        width: 2,
+                                      )
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                   const SizedBox(height: 25,),
                   Container(
                     height: 70,
@@ -259,7 +264,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                             crossAxisCount: 3,
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10,
-                            children: List.generate(6, (index){
+                            children: List.generate(2, (index){
                               return Container(
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),

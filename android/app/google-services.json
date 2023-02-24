@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "774255751707",
+    "project_id": "qcu-mobile",
+    "storage_bucket": "qcu-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:774255751707:android:58d7cbc34773f9487b3ebe",
+        "android_client_info": {
+          "package_name": "com.devtastic.qcu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "774255751707-t0g5qussa1ts542ear4o6hsp4bjfs5fl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAhFcIhy8Nw9q4wGCdgeq0NY3MeSG2ugI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "774255751707-t0g5qussa1ts542ear4o6hsp4bjfs5fl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

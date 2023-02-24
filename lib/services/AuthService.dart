@@ -70,4 +70,8 @@ class AuthService{
       print(e);
     }
   }
+
+  void signOut(){
+    FirebaseAuth.instance.signOut();
+  }
 }

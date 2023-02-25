@@ -3,12 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:qcu/cosntants/colors.dart';
+import 'package:qcu/features/Admins/dashboard/aDashboardView.dart';
+import 'package:qcu/features/Sellers/orders/sOrdersView.dart';
+import 'package:qcu/features/Sellers/profile/sProfileView.dart';
+import 'package:qcu/features/Sellers/store/sStoreView.dart';
 import 'package:qcu/services/FirestoreService.dart';
 
-import 'Users/home/HomeView.dart';
-import 'Users/mall/MallView.dart';
-import 'Users/notifications/NotifView.dart';
-import 'Users/profile/ProfileView.dart';
+import 'Admins/accounts/aAccountsView.dart';
+import 'Sellers/notifications/sNotifView.dart';
+import 'Users/home/uHomeView.dart';
+import 'Users/mall/uMallView.dart';
+import 'Users/notifications/uNotifView.dart';
+import 'Users/profile/uProfileView.dart';
 import 'ViewModels/AuthViewModel.dart';
 
 class AppNavBar extends ConsumerStatefulWidget {
@@ -34,17 +40,17 @@ class _AppNavBarState extends ConsumerState<AppNavBar> {
 
   List<Widget> _sellerScreens() {
     return [
-      const HomeView(),
-      const MallView(),
-      const NotifView(),
-      const ProfileView()
+      const SStoreView(),
+      const SOrdersView(),
+      const SNotifView(),
+      const SProfileView()
     ];
   }
 
   List<Widget> _adminScreens() {
     return [
-      const HomeView(),
-      const MallView(),
+      const ADashboardView(),
+      const AAccountsView(),
       const NotifView(),
       const ProfileView()
     ];
@@ -83,14 +89,14 @@ class _AppNavBarState extends ConsumerState<AppNavBar> {
   List<PersistentBottomNavBarItem> _sellerItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.home),
-        title: ("Home"),
+        icon: const Icon(Icons.store_mall_directory_outlined),
+        title: ("Your Store"),
         activeColorPrimary: AppColors().primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.bag),
-        title: ("QCU Mall"),
+        icon: const Icon(Icons.local_shipping_outlined),
+        title: ("Orders"),
         activeColorPrimary: AppColors().primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
@@ -112,14 +118,14 @@ class _AppNavBarState extends ConsumerState<AppNavBar> {
   List<PersistentBottomNavBarItem> _adminItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.home),
-        title: ("Home"),
+        icon: const Icon(Icons.dashboard),
+        title: ("Dashboard"),
         activeColorPrimary: AppColors().primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.bag),
-        title: ("QCU Mall"),
+        icon: const Icon(CupertinoIcons.person_2),
+        title: ("Accounts"),
         activeColorPrimary: AppColors().primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
@@ -147,14 +153,14 @@ class _AppNavBarState extends ConsumerState<AppNavBar> {
       data: (data){
         if(data != null){
           return FutureBuilder(
-              future:  FirestoreService().checkUserType(data?.uid),
+              future:  FirestoreService().checkUserType(data.uid),
               builder: (context, snapshot) {
                 if(snapshot.hasData){
                   return PersistentTabView(
                     context,
                     controller: _controller,
-                    screens: _userScreens(),
-                    items: _userItems(),
+                    screens: snapshot.data == "Buyer" ? _userScreens() : snapshot.data == "Seller" ? _sellerScreens() : _adminScreens(),
+                    items: snapshot.data == "Buyer" ? _userItems() : snapshot.data == "Seller" ? _sellerItems() : _adminItems(),
                     confineInSafeArea: true,
                     backgroundColor: Colors.white, // Default is Colors.white.
                     handleAndroidBackButtonPress: true, // Default is true.

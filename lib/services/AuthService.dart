@@ -6,6 +6,10 @@ import 'FirestoreService.dart';
 
 class AuthService{
 
+  String getID(){
+    return FirebaseAuth.instance.currentUser!.uid;
+  }
+
   Future<void> signIn(emailAddress, password) async {
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:qcu/services/CloudService.dart';
 
 class FirestoreService{
   var instance = FirebaseFirestore.instance;
@@ -25,6 +26,23 @@ class FirestoreService{
       return "Admin";
     }
     return "Unknown";
+  }
+
+  Future<void> addItem(name, price, description, image, seller, category, stock) async {
+    var ref = instance.collection("Items").doc();
+    ref.set({
+      "Name" : name,
+      "Price" : price,
+      "Description" : description,
+      "Image" : image,
+      "Seller" : seller,
+      "Category" : category,
+      "Stock" : stock,
+    });
+  }
+
+  void deleteItem(id){
+    instance.collection("Items").doc(id).delete();
   }
 
 

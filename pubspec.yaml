@@ -47,6 +47,12 @@ dependencies:
   change_app_package_name: ^1.1.0
   fluttertoast: ^8.2.1
   flutter_rating_bar: ^4.0.1
+  modal_bottom_sheet:
+    git:
+      url: https://github.com/followthemoney1/modal_bottom_sheet.git
+      ref: main
+      path: modal_bottom_sheet
+  file_picker: ^5.2.5
 
 dev_dependencies:
   flutter_test:

@@ -105,14 +105,14 @@ class _AAccountsViewState extends ConsumerState<AAccountsView> {
                         const Spacer(),
                         IconButton(
                           onPressed: () {},
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.edit,
                             color: Colors.black,
                           ),
                         ),
                         IconButton(
                           onPressed: () {},
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.delete,
                             color: Colors.black,
                           ),
@@ -183,14 +183,14 @@ class _AAccountsViewState extends ConsumerState<AAccountsView> {
                         const Spacer(),
                         IconButton(
                           onPressed: () {},
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.edit,
                             color: Colors.black,
                           ),
                         ),
                         IconButton(
                           onPressed: () {},
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.delete,
                             color: Colors.black,
                           ),

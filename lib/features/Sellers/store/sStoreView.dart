@@ -143,6 +143,7 @@ class _sStoreViewState extends ConsumerState<SStoreView> {
                                 seller: filteredData[index].data()["Seller"],
                                 category:
                                     filteredData[index].data()["Category"],
+                                id: filteredData[index].id,
                               ),
                             );
                           },

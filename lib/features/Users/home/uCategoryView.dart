@@ -141,6 +141,7 @@ class _UCategoryViewState extends ConsumerState<UCategoryView> {
                               stock: filteredData[index].data()["Stock"],
                               seller: filteredData[index].data()["Seller"],
                               category: filteredData[index].data()["Category"],
+                              id: filteredData[index].id,
                             ),
                           );
                         },

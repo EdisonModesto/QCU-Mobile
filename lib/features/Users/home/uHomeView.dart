@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qcu/cosntants/colors.dart';
+import 'package:qcu/features/Users/home/uCategoryView.dart';
 
+import '../../../common/cart/CartView.dart';
 import '../../../common/itemDetails/ItemView.dart';
 import '../../ViewModels/FeedViewModel.dart';
 
@@ -87,7 +89,18 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showMaterialModalBottomSheet(
+                          context: context,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                            ),
+                          ),
+                          builder: (context) => const CartView(),
+                        );
+                      },
                       icon: Icon(
                         Icons.shopping_cart_outlined,
                         color: AppColors().primary,
@@ -184,19 +197,30 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: List.generate(cat.length, (index){
-                        return Column(
-                          children: [
-                            Icon(
-                                cat[index]
-                            ),
-                            Text(
-                              str[index],
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: AppColors().black,
+                        return InkWell(
+                          onTap: () {
+                            showMaterialModalBottomSheet(
+                              context: context,
+                              expand: true,
+                              builder: (context){
+                               return UCategoryView(category: str[index],);
+                             },
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              Icon(
+                                  cat[index]
                               ),
-                            ),
-                          ],
+                              Text(
+                                str[index],
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  color: AppColors().black,
+                                ),
+                              ),
+                            ],
+                          ),
                         );
                       }),
                     ),
@@ -217,20 +241,33 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       child: GridView.count(
                         padding: const EdgeInsets.all(0),
                         crossAxisCount: 4,
+                        childAspectRatio: 1.3,
                         children: List.generate(cat2.length, (index){
-                          return Column(
-                            children: [
-                              Icon(
-                                  cat2[index]
-                              ),
-                              Text(
-                                str2[index],
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                  color: AppColors().black,
+                          return InkWell(
+                            onTap: () {
+                              showMaterialModalBottomSheet(
+                                context: context,
+                                expand: true,
+                                builder: (context){
+                                  return UCategoryView(category: str2[index],);
+                                },
+                              );
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                    cat2[index]
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  str2[index],
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14,
+                                    color: AppColors().black,
+                                  ),
+                                ),
+                              ],
+                            ),
                           );
                         }),
                       )
@@ -252,7 +289,15 @@ class _HomeViewState extends ConsumerState<HomeView> {
                               ),
                             ),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                showMaterialModalBottomSheet(
+                                  context: context,
+                                  expand: true,
+                                  builder: (context){
+                                    return const UCategoryView(category: "Flash Sale",);
+                                  },
+                                );
+                              },
                               child: Text(
                                 "See All >>",
                                 style: GoogleFonts.poppins(
@@ -309,7 +354,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                               flex: 2,
                                               child: Container(
                                                 decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.only(
+                                                    borderRadius: const BorderRadius.only(
                                                       topLeft: Radius.circular(8),
                                                       topRight: Radius.circular(8),
                                                     ),
@@ -362,7 +407,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                               );
                             },
                             loading: (){
-                              return Center(
+                              return const Center(
                                 child: CircularProgressIndicator(),
                               );
                             },

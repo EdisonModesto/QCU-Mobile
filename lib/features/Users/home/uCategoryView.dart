@@ -1,28 +1,28 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:google_fonts/google_fonts.dart";
+import "package:modal_bottom_sheet/modal_bottom_sheet.dart";
 
-import '../../../common/cart/CartView.dart';
-import '../../../common/itemDetails/ItemView.dart';
-import '../../../cosntants/colors.dart';
-import '../../ViewModels/FeedViewModel.dart';
+import "../../../common/itemDetails/ItemView.dart";
+import "../../../cosntants/colors.dart";
+import "../../ViewModels/FeedViewModel.dart";
 
-
-class MallView extends ConsumerStatefulWidget {
-  const MallView({
+class UCategoryView extends ConsumerStatefulWidget {
+  const UCategoryView({
+    required this.category,
     Key? key,
   }) : super(key: key);
 
+  final String category;
+
   @override
-  ConsumerState createState() => _MallViewState();
+  ConsumerState createState() => _UCategoryViewState();
 }
 
-class _MallViewState extends ConsumerState<MallView> {
+class _UCategoryViewState extends ConsumerState<UCategoryView> {
   @override
   Widget build(BuildContext context) {
-
     var feed = ref.watch(feedProvider);
 
     return Container(
@@ -40,7 +40,7 @@ class _MallViewState extends ConsumerState<MallView> {
                     ),
                     const SizedBox(width: 20,),
                     Text(
-                      "QCU Mall",
+                      widget.category,
                       style: GoogleFonts.poppins(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -52,18 +52,7 @@ class _MallViewState extends ConsumerState<MallView> {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () {
-                        showMaterialModalBottomSheet(
-                          context: context,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
-                            ),
-                          ),
-                          builder: (context) => const CartView(),
-                        );
-                      },
+                      onPressed: () {},
                       icon: Icon(
                         Icons.shopping_cart_outlined,
                         color: AppColors().primary,
@@ -125,13 +114,15 @@ class _MallViewState extends ConsumerState<MallView> {
             Expanded(
               child: feed.when(
                 data: (data){
+
+                  var filteredData = data.docs.where((element) => element.data()["Category"] == widget.category).toList();
                   return GridView.count(
                     padding: const EdgeInsets.all(0),
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     childAspectRatio: 0.8,
-                    children: List.generate(data.docs.length, (index){
+                    children: List.generate(filteredData.length, (index){
                       return InkWell(
                         onTap: () {
                           showMaterialModalBottomSheet(
@@ -143,13 +134,13 @@ class _MallViewState extends ConsumerState<MallView> {
                               ),
                             ),
                             builder: (context) => ItemView(
-                              url: data.docs[index].data()["Image"],
-                              name: data.docs[index].data()["Name"],
-                              price: data.docs[index].data()["Price"],
-                              description: data.docs[index].data()["Description"],
-                              stock: data.docs[index].data()["Stock"],
-                              seller: data.docs[index].data()["Seller"],
-                              category: data.docs[index].data()["Category"],
+                              url: filteredData[index].data()["Image"],
+                              name: filteredData[index].data()["Name"],
+                              price: filteredData[index].data()["Price"],
+                              description: filteredData[index].data()["Description"],
+                              stock: filteredData[index].data()["Stock"],
+                              seller: filteredData[index].data()["Seller"],
+                              category: filteredData[index].data()["Category"],
                             ),
                           );
                         },
@@ -172,7 +163,7 @@ class _MallViewState extends ConsumerState<MallView> {
                                         ),
                                         image: DecorationImage(
                                             image: NetworkImage(
-                                                data.docs[index]
+                                                filteredData[index]
                                                     .data()["Image"]),
                                             fit: BoxFit.cover)),
                                   )),
@@ -182,7 +173,7 @@ class _MallViewState extends ConsumerState<MallView> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      data.docs[index].data()["Name"],
+                                      filteredData[index].data()["Name"],
                                       style: GoogleFonts.poppins(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
@@ -190,7 +181,7 @@ class _MallViewState extends ConsumerState<MallView> {
                                       ),
                                     ),
                                     Text(
-                                      "PHP ${data.docs[index].data()["Price"]}",
+                                      "PHP ${filteredData[index].data()["Price"]}",
                                       style: GoogleFonts.poppins(
                                         fontSize: 14,
                                         color: Colors.black,

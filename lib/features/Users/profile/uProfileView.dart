@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qcu/services/AuthService.dart';
 
 import '../../../common/authentication/AuthDialog.dart';
+import '../../../common/cart/CartView.dart';
 import '../../../cosntants/colors.dart';
 import '../../ViewModels/AuthViewModel.dart';
 
@@ -54,7 +56,18 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                showMaterialModalBottomSheet(
+                                  context: context,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                    ),
+                                  ),
+                                  builder: (context) => const CartView(),
+                                );
+                              },
                               icon: Icon(
                                 Icons.shopping_cart_outlined,
                                 color: AppColors().primary,

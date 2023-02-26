@@ -66,7 +66,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 40, right: 40, top: 40),
+            padding: const EdgeInsets.only(left: 35, right: 35, top: 40),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -183,7 +183,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   const SizedBox(height: 25,),
                   Container(
                     height: 70,
-                    margin: const EdgeInsets.symmetric(horizontal: 40),
+                    margin: const EdgeInsets.symmetric(horizontal: 35),
                     padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
@@ -227,9 +227,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   ),
                   const SizedBox(height: 15,),
                   Container(
-                      height: 140,
-                      margin: const EdgeInsets.symmetric(horizontal: 40),
-                      padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+                      height: 150,
+                      margin: const EdgeInsets.symmetric(horizontal: 35),
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
@@ -239,9 +238,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           )
                       ),
                       child: GridView.count(
+                        shrinkWrap: true,
                         padding: const EdgeInsets.all(0),
                         crossAxisCount: 4,
-                        childAspectRatio: 1.3,
+                        childAspectRatio: 1,
+                        mainAxisSpacing: 0,
+                        crossAxisSpacing: 0,
                         children: List.generate(cat2.length, (index){
                           return InkWell(
                             onTap: () {
@@ -274,7 +276,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   ),
                   const SizedBox(height: 10,),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    padding: const EdgeInsets.symmetric(horizontal: 35),
                     child: Column(
                       children: [
                         Row(
@@ -338,6 +340,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                           stock: data.docs[index].data()["Stock"],
                                           seller: data.docs[index].data()["Seller"],
                                           category: data.docs[index].data()["Category"],
+                                          id: data.docs[index].id,
                                         ),
                                       );
                                     },

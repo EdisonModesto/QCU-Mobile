@@ -27,7 +27,7 @@ class _MallViewState extends ConsumerState<MallView> {
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.8,
-      padding: const EdgeInsets.only(left: 40, right: 40, top: 40),
+      padding: const EdgeInsets.only(left: 35, right: 35, top: 40),
       child: Column(
           children: [
             Row(
@@ -150,6 +150,7 @@ class _MallViewState extends ConsumerState<MallView> {
                               stock: data.docs[index].data()["Stock"],
                               seller: data.docs[index].data()["Seller"],
                               category: data.docs[index].data()["Category"],
+                              id: data.docs[index].id,
                             ),
                           );
                         },

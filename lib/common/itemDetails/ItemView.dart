@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qcu/cosntants/colors.dart';
+import 'package:qcu/services/AuthService.dart';
+import 'package:qcu/services/FirestoreService.dart';
 
 class ItemView extends ConsumerStatefulWidget {
   const ItemView({
@@ -12,6 +15,7 @@ class ItemView extends ConsumerStatefulWidget {
     required this.stock,
     required this.seller,
     required this.category,
+    required this.id,
     Key? key,
   }) : super(key: key);
 
@@ -22,6 +26,7 @@ class ItemView extends ConsumerStatefulWidget {
   final String stock;
   final String seller;
   final String category;
+  final String id;
 
   @override
   ConsumerState createState() => _ItemViewState();
@@ -85,7 +90,9 @@ class _ItemViewState extends ConsumerState<ItemView> {
                         ],
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          FirestoreService().addToCart(AuthService().getID(), widget.id);
+                        },
                         icon: Icon(Icons.shopping_basket_outlined),
                       ),
                     ],

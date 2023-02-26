@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qcu/services/CloudService.dart';
 
 class FirestoreService{
@@ -10,6 +11,7 @@ class FirestoreService{
       "Address" : "",
       "Type" : "Buyer",
       "Orders" : [],
+      "Cart": [],
     });
   }
 
@@ -45,5 +47,18 @@ class FirestoreService{
     instance.collection("Items").doc(id).delete();
   }
 
+  Future<void> addToCart(id, item) async {
+    var ref = await instance.collection("Users").doc(id).get();
+    List<dynamic> cart = ref.data()!["Cart"] as List<dynamic>;
+    if(cart.contains(item)){
+      Fluttertoast.showToast(msg: "Item already in cart");
+    }
+    else{
+      instance.collection("Users").doc(id).update({
+        "Cart" : FieldValue.arrayUnion([item])
+      });
+     Fluttertoast.showToast(msg: "Item added to cart");
+    }
+  }
 
 }

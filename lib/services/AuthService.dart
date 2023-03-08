@@ -6,6 +6,10 @@ import 'FirestoreService.dart';
 
 class AuthService{
 
+  void resetPassword(email){
+    FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
+
   String getID(){
     return FirebaseAuth.instance.currentUser!.uid;
   }

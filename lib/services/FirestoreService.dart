@@ -2,18 +2,32 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qcu/services/CloudService.dart';
 
+import 'AuthService.dart';
+
 class FirestoreService{
   var instance = FirebaseFirestore.instance;
 
   void createUser(id){
     instance.collection("Users").doc(id).set({
       "Name" : "No name",
-      "Address" : "",
+      "Image": "",
+      "Contact" : "",
+      "Address" : "No Data%NCR%Caloocan",
       "Type" : "Buyer",
       "Orders" : [],
       "Cart": [],
     });
   }
+
+  void updateUser(name, address, image, contact){
+    FirebaseFirestore.instance.collection("Users").doc(AuthService().getID()).update({
+      "Name": name,
+      "Image": image,
+      "Contact": contact,
+      "Address": address,
+    });
+  }
+
 
   Future<String> checkUserType(id) async {
     var doc = await instance.collection("Users").doc(id).get();
@@ -47,7 +61,7 @@ class FirestoreService{
     instance.collection("Items").doc(id).delete();
   }
 
-  Future<void> addToCart(id, item) async {
+  Future<void> addToCart(id, item, quantity) async {
     var ref = await instance.collection("Users").doc(id).get();
     List<dynamic> cart = ref.data()!["Cart"] as List<dynamic>;
     if(cart.contains(item)){
@@ -55,10 +69,56 @@ class FirestoreService{
     }
     else{
       instance.collection("Users").doc(id).update({
-        "Cart" : FieldValue.arrayUnion([item])
+        "Cart" : FieldValue.arrayUnion(["$item,$quantity"]),
       });
      Fluttertoast.showToast(msg: "Item added to cart");
     }
+  }
+
+  void updateCartQuantity(id, quantity, old){
+    FirebaseFirestore.instance.collection("Users").doc(AuthService().getID()).update({
+      "Cart": FieldValue.arrayRemove([old])
+    });
+    if(quantity == 0){
+
+    } else {
+      FirebaseFirestore.instance.collection("Users").doc(AuthService().getID()).update({
+        "Cart": FieldValue.arrayUnion(["$id,$quantity"])
+      });
+    }
+  }
+
+  Future<void> createOrder(items, name, contact, address) async {
+
+    FirebaseFirestore.instance.collection("Users").doc(AuthService().getID()).update({
+      "Cart": [],
+    });
+
+    FirebaseFirestore.instance.collection("Orders").doc().set({
+      "User": AuthService().getID(),
+      "Items": items,
+      "Status": "0",
+      "Name": name,
+      "Contact": contact,
+      "Address": address,
+      //"Date": DateTime.now().toString(),
+    });
+
+    for(var item in items){
+      var itemInstance = FirebaseFirestore.instance.collection("Items").doc(item.toString().split(",")[0]);
+      var itemData = await itemInstance.get();
+      var itemStocks = itemData.data()!["Stocks"];
+      FirebaseFirestore.instance.collection("Items").doc(item.toString().split(",")[0]).update({
+        "Stocks" : (int.parse(itemStocks) - int.parse(item.toString().split(",")[1])).toString(),
+      });
+    }
+
+  }
+
+  void updateOrderStatus(id, status){
+    FirebaseFirestore.instance.collection("Orders").doc(id).update({
+      "Status": status,
+    });
   }
 
 }

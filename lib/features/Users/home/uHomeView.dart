@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,367 +64,354 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.8,
-      child: Column(
+      child: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 35, right: 35, top: 40),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 35, right: 35, top: 40),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const CircleAvatar(
-                      backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
-                    ),
-                    const SizedBox(width: 20,),
-                    Text(
-                      "Home",
-                      style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        showMaterialModalBottomSheet(
-                          context: context,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
-                            ),
-                          ),
-                          builder: (context) => const CartView(),
-                        );
-                      },
-                      icon: Icon(
-                        Icons.shopping_cart_outlined,
-                        color: AppColors().primary,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        CupertinoIcons.chat_bubble_text,
-                        color: AppColors().secondary,
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-          const SizedBox(height: 17,),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 23),
-                    height: 125,
-                    width: MediaQuery.of(context).size.width,
-                    color: AppColors().primary,
-                    child: Stack(
+                    Row(
                       children: [
-                        Center(
-                          child: Text(
-                            "Voucher Carousel",
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
+                        const CircleAvatar(
+                          backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
+                        ),
+                        const SizedBox(width: 20,),
+                        Text(
+                          "Home",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
                           ),
                         ),
-                        OverflowBox(
-                          child: Transform.translate(
-                            offset: const Offset(0, -60),
-                            child: Container(
-                              height: 50,
-                              width: MediaQuery.of(context).size.width,
-                              padding: const EdgeInsets.symmetric(horizontal: 40),
-                              child: TextField(
-                                controller: searchCtrl,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.only(left: 20, right: 20),
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  hintText: "Search",
-                                  hintStyle: GoogleFonts.poppins(
-                                      fontSize: 14,
-                                      color: AppColors().black
-                                  ),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                      borderSide: BorderSide(
-                                        color: AppColors().primary,
-                                        width: 2,
-                                      )
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                      borderSide: BorderSide(
-                                        color: AppColors().primary,
-                                        width: 2,
-                                      )
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 25,),
-                  Container(
-                    height: 70,
-                    margin: const EdgeInsets.symmetric(horizontal: 35),
-                    padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: AppColors().primary,
-                          width: 2,
-                        )
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: List.generate(cat.length, (index){
-                        return InkWell(
-                          onTap: () {
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
                             showMaterialModalBottomSheet(
                               context: context,
-                              expand: true,
-                              builder: (context){
-                               return UCategoryView(category: str[index],);
-                             },
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                ),
+                              ),
+                              builder: (context) => const CartView(),
                             );
                           },
-                          child: Column(
-                            children: [
-                              Icon(
-                                  cat[index]
-                              ),
-                              Text(
-                                str[index],
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                  color: AppColors().black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                    ),
-                  ),
-                  const SizedBox(height: 15,),
-                  Container(
-                      height: 150,
-                      margin: const EdgeInsets.symmetric(horizontal: 35),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
+                          icon: Icon(
+                            Icons.shopping_cart_outlined,
                             color: AppColors().primary,
-                            width: 2,
-                          )
-                      ),
-                      child: GridView.count(
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.all(0),
-                        crossAxisCount: 4,
-                        childAspectRatio: 1,
-                        mainAxisSpacing: 0,
-                        crossAxisSpacing: 0,
-                        children: List.generate(cat2.length, (index){
-                          return InkWell(
-                            onTap: () {
-                              showMaterialModalBottomSheet(
-                                context: context,
-                                expand: true,
-                                builder: (context){
-                                  return UCategoryView(category: str2[index],);
-                                },
-                              );
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                    cat2[index]
-                                ),
-                                Text(
-                                  str2[index],
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14,
-                                    color: AppColors().black,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            CupertinoIcons.chat_bubble_text,
+                            color: AppColors().secondary,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 17,),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 125,
+                        width: MediaQuery.of(context).size.width,
+                        color: AppColors().primary,
+                        child: Center(
+                          child: CarouselSlider.builder(
+                            options: CarouselOptions(
+                              height: 100.0,
+                              autoPlay: true,
+                              enlargeCenterPage: true,
+                            ),
+                            itemCount: 5,
+                            itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+                                Container(
+                                  width: MediaQuery.of(context).size.width * 0.8,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  padding: const EdgeInsets.only(left: 10, right: 10),
+                                  child: Image.asset(
+                                    "assets/images/v${itemIndex+1}.png",
+                                    width: MediaQuery.of(context).size.width * 0.8,
+                                    fit: BoxFit.fill,
                                   ),
                                 ),
-                              ],
-                            ),
-                          );
-                        }),
-                      )
-                  ),
-                  const SizedBox(height: 10,),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35),
-                    child: Column(
-                      children: [
-                        Row(
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 25,),
+                      Container(
+                        height: 70,
+                        margin: const EdgeInsets.symmetric(horizontal: 35),
+                        padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: AppColors().primary,
+                              width: 2,
+                            )
+                        ),
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Flash Sale",
-                              style: GoogleFonts.poppins(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: List.generate(cat.length, (index){
+                            return InkWell(
+                              onTap: () {
                                 showMaterialModalBottomSheet(
                                   context: context,
                                   expand: true,
                                   builder: (context){
-                                    return const UCategoryView(category: "Flash Sale",);
-                                  },
+                                   return UCategoryView(category: str[index],);
+                                 },
                                 );
                               },
-                              child: Text(
-                                "See All >>",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                  color: AppColors().primary,
-                                ),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                      cat[index]
+                                  ),
+                                  Text(
+                                    str[index],
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      color: AppColors().black,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
+                            );
+                          }),
                         ),
-                        const SizedBox(height: 5,),
-                        SizedBox(
-                          height: 200,
-                          child: feed.when(
-                            data: (data){
-                              return GridView.count(
-                                padding: const EdgeInsets.all(0),
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
-                                childAspectRatio: 0.8,
-                                children: List.generate(data.docs.length, (index){
-                                  return InkWell(
-                                    onTap: () {
-                                      showMaterialModalBottomSheet(
-                                        context: context,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(20),
-                                            topRight: Radius.circular(20),
-                                          ),
-                                        ),
-                                        builder: (context) => ItemView(
-                                          url: data.docs[index].data()["Image"],
-                                          name: data.docs[index].data()["Name"],
-                                          price: data.docs[index].data()["Price"],
-                                          description: data.docs[index].data()["Description"],
-                                          stock: data.docs[index].data()["Stock"],
-                                          seller: data.docs[index].data()["Seller"],
-                                          category: data.docs[index].data()["Category"],
-                                          id: data.docs[index].id,
-                                        ),
-                                      );
+                      ),
+                      const SizedBox(height: 15,),
+                      Container(
+                          height: 150,
+                          margin: const EdgeInsets.symmetric(horizontal: 35),
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: AppColors().primary,
+                                width: 2,
+                              )
+                          ),
+                          child: GridView.count(
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.all(0),
+                            crossAxisCount: 4,
+                            childAspectRatio: 1,
+                            mainAxisSpacing: 0,
+                            crossAxisSpacing: 0,
+                            children: List.generate(cat2.length, (index){
+                              return InkWell(
+                                onTap: () {
+                                  showMaterialModalBottomSheet(
+                                    context: context,
+                                    expand: true,
+                                    builder: (context){
+                                      return UCategoryView(category: str2[index],);
                                     },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8),
-                                          border: Border.all(
-                                            color: AppColors().primary,
-                                            width: 2,
-                                          )),
-                                      child: Column(
-                                        children: [
-                                          Expanded(
-                                              flex: 2,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius: const BorderRadius.only(
-                                                      topLeft: Radius.circular(8),
-                                                      topRight: Radius.circular(8),
-                                                    ),
-                                                    image: DecorationImage(
-                                                        image: NetworkImage(
-                                                            data.docs[index]
-                                                                .data()["Image"]),
-                                                        fit: BoxFit.cover)),
-                                              )),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  data.docs[index].data()["Name"],
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "PHP ${data.docs[index].data()["Price"]}",
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ],
+                                  );
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                        cat2[index]
+                                    ),
+                                    Text(
+                                      str2[index],
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                        color: AppColors().black,
                                       ),
                                     ),
-                                  );
-                                }),
+                                  ],
+                                ),
                               );
-                            },
-                            error: (error, stack){
-                              return Center(
-                                child: Text(
-                                  error.toString(),
+                            }),
+                          )
+                      ),
+                      const SizedBox(height: 10,),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 35),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Flash Sale",
                                   style: GoogleFonts.poppins(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
                                   ),
                                 ),
-                              );
-                            },
-                            loading: (){
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            },
-                          ),
-                        )
-                      ],
-                    ),
+                                TextButton(
+                                  onPressed: () {
+                                    showMaterialModalBottomSheet(
+                                      context: context,
+                                      expand: true,
+                                      builder: (context){
+                                        return const UCategoryView(category: "Flash Sale",);
+                                      },
+                                    );
+                                  },
+                                  child: Text(
+                                    "See All >>",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      color: AppColors().primary,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 5,),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.5,
+                              child: feed.when(
+                                data: (data){
+                                  return GridView.count(
+                                    padding: const EdgeInsets.all(0),
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10,
+                                    childAspectRatio: 0.8,
+                                    children: List.generate(data.docs.length, (index){
+                                      return InkWell(
+                                        onTap: () {
+                                          showMaterialModalBottomSheet(
+                                            context: context,
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(20),
+                                                topRight: Radius.circular(20),
+                                              ),
+                                            ),
+                                            builder: (context) => ItemView(
+                                              url: data.docs[index].data()["Image"],
+                                              name: data.docs[index].data()["Name"],
+                                              price: data.docs[index].data()["Price"],
+                                              description: data.docs[index].data()["Description"],
+                                              stock: data.docs[index].data()["Stock"],
+                                              seller: data.docs[index].data()["Seller"],
+                                              category: data.docs[index].data()["Category"],
+                                              id: data.docs[index].id,
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(8),
+                                              border: Border.all(
+                                                color: AppColors().primary,
+                                                width: 2,
+                                              )),
+                                          child: Column(
+                                            children: [
+                                              Expanded(
+                                                  flex: 2,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius: const BorderRadius.only(
+                                                          topLeft: Radius.circular(8),
+                                                          topRight: Radius.circular(8),
+                                                        ),
+                                                        image: DecorationImage(
+                                                            image: NetworkImage(
+                                                                data.docs[index]
+                                                                    .data()["Image"]),
+                                                            fit: BoxFit.cover)),
+                                                  )),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      data.docs[index].data()["Name"],
+                                                      style: GoogleFonts.poppins(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "PHP ${data.docs[index].data()["Price"]}",
+                                                      style: GoogleFonts.poppins(
+                                                        fontSize: 14,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                  );
+                                },
+                                error: (error, stack){
+                                  return Center(
+                                    child: Text(
+                                      error.toString(),
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                loading: (){
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
+              )
+            ]
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Transform.translate(
+              offset: const Offset(-25, -25),
+              child: FloatingActionButton(
+                onPressed: () {},
+                backgroundColor: AppColors().primary,
+                child: const Icon(CupertinoIcons.search),
               ),
             ),
           )
-        ]
+        ],
       ),
     );
   }

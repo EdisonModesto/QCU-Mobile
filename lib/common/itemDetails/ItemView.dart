@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qcu/cosntants/colors.dart';
 import 'package:qcu/services/AuthService.dart';
 import 'package:qcu/services/FirestoreService.dart';
+
+import '../cart/AddToCartSheet.dart';
 
 class ItemView extends ConsumerStatefulWidget {
   const ItemView({
@@ -91,9 +94,20 @@ class _ItemViewState extends ConsumerState<ItemView> {
                       ),
                       IconButton(
                         onPressed: () {
-                          FirestoreService().addToCart(AuthService().getID(), widget.id);
+                          showMaterialModalBottomSheet(
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                            ),
+                            builder: (context) => AddToCartSheet(
+                              id: widget.id,
+                            ),
+                          );
                         },
-                        icon: Icon(Icons.shopping_basket_outlined),
+                        icon: const Icon(Icons.shopping_basket_outlined),
                       ),
                     ],
                   ),

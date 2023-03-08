@@ -3,7 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../common/authentication/AuthDialog.dart';
+import '../../../common/authentication/AuthView.dart';
 import '../../../cosntants/colors.dart';
 import '../../../services/AuthService.dart';
 import '../../ViewModels/AuthViewModel.dart';

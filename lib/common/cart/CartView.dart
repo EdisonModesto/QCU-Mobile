@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qcu/features/ViewModels/UserViewModel.dart';
 
 import '../../cosntants/colors.dart';
+import '../../services/AdMob/ad_helper.dart';
 import '../../services/FirestoreService.dart';
 
 class CartView extends ConsumerStatefulWidget {
@@ -34,6 +36,37 @@ class _CartViewState extends ConsumerState<CartView> {
     }
     return total;
   }
+
+  // TODO: Add _bannerAd
+  BannerAd? _bannerAd;
+
+  @override
+  void initState() {
+    BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          print('Failed to load a banner ad: ${err.message}');
+          ad.dispose();
+        },
+      ),
+    ).load();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
 

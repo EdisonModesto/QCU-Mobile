@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:qcu/features/ViewModels/UserViewModel.dart';
 
 import '../../../common/authentication/AuthView.dart';
 import '../../../cosntants/colors.dart';
@@ -20,6 +21,8 @@ class SProfileView extends ConsumerStatefulWidget {
 class _SProfileViewState extends ConsumerState<SProfileView> {
   @override
   Widget build(BuildContext context) {
+
+    var userDetails = ref.watch(userProvider);
 
     return Container(
         height: MediaQuery.of(context).size.height * 0.8,
@@ -55,59 +58,73 @@ class _SProfileViewState extends ConsumerState<SProfileView> {
                 ],
               ),
               const SizedBox(height: 20,),
-              Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: AppColors().primary,
-                    radius: 35,
-                    backgroundImage: const AssetImage("assets/images/QCUlogo.jpg"),
-                  ),
-                  const SizedBox(width: 20,),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              userDetails.when(
+                data: (data){
+                  return Row(
                     children: [
-                      Text(
-                        "Shop Name",
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                        ),
+                      CircleAvatar(
+                        backgroundColor: AppColors().primary,
+                        radius: 35,
+                        backgroundImage: NetworkImage(data.data()!["Image"]),
                       ),
-                      SizedBox(
-                        height: 20,
-                        child: RatingBar(
-                          itemSize: 20,
-                          initialRating: 3,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          ignoreGestures: true,
-                          ratingWidget: RatingWidget(
-                            full: const Icon(Icons.star, color: Colors.amber),
-                            half: const Icon(Icons.star_half, color: Colors.amber),
-                            empty: const Icon(Icons.star_border, color: Colors.amber),
+                      const SizedBox(width: 20,),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            data.data()!["Name"],
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
                           ),
-                          itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
-                          onRatingUpdate: (rating) {
-                            print(rating);
-                          },
+                          SizedBox(
+                            height: 20,
+                            child: RatingBar(
+                              itemSize: 20,
+                              initialRating: 3,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              ignoreGestures: true,
+                              ratingWidget: RatingWidget(
+                                full: const Icon(Icons.star, color: Colors.amber),
+                                half: const Icon(Icons.star_half, color: Colors.amber),
+                                empty: const Icon(Icons.star_border, color: Colors.amber),
+                              ),
+                              itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
+                              onRatingUpdate: (rating) {
+                                print(rating);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      IconButton(
+                        onPressed: () {
+                          AuthService().signOut();
+                        },
+                        icon: Icon(
+                          Icons.logout,
+                          color: AppColors().primary,
                         ),
                       ),
                     ],
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () {
-                      AuthService().signOut();
-                    },
-                    icon: Icon(
-                      Icons.logout,
-                      color: AppColors().primary,
-                    ),
-                  ),
-                ],
+                  );
+                },
+                error: (error, stack){
+                  return const Center(
+                    child: Text("Error"),
+                  );
+                },
+                loading: (){
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
               ),
               const SizedBox(height: 20,),
               Text(

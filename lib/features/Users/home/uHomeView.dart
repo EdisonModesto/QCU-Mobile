@@ -1,14 +1,19 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qcu/cosntants/colors.dart';
+import 'package:qcu/features/Users/home/FeaturedViewModel.dart';
 import 'package:qcu/features/Users/home/uCategoryView.dart';
 
 import '../../../common/cart/CartView.dart';
 import '../../../common/itemDetails/ItemView.dart';
+import '../../../services/AdMob/ad_helper.dart';
 import '../../ViewModels/FeedViewModel.dart';
 
 class HomeView extends ConsumerStatefulWidget {
@@ -20,16 +25,9 @@ class HomeView extends ConsumerStatefulWidget {
   ConsumerState createState() => _HomeViewState();
 }
 
-class _HomeViewState extends ConsumerState<HomeView> {
+class _HomeViewState extends ConsumerState<HomeView>  {
 
   TextEditingController searchCtrl = TextEditingController();
-
-  var cat = [
-    Icons.emoji_food_beverage_outlined,
-    Icons.shopping_cart_outlined,
-    Icons.house_outlined,
-    Icons.payment_outlined,
-  ];
 
   var cat2 = [
     Icons.book_outlined,
@@ -37,14 +35,11 @@ class _HomeViewState extends ConsumerState<HomeView> {
     Icons.lightbulb_outline,
     Icons.warehouse_outlined,
     Icons.build_outlined,
+    Icons.emoji_food_beverage_outlined,
+    Icons.shopping_cart_outlined,
+    Icons.house_outlined,
+    Icons.payment_outlined,
     Icons.more_horiz_outlined,
-  ];
-
-  var str = [
-    "Food",
-    "Shopping",
-    "Rent",
-    "Payment",
   ];
 
   var str2 = [
@@ -53,14 +48,18 @@ class _HomeViewState extends ConsumerState<HomeView> {
     "Lights",
     "Tents",
     "Tools",
+    "Food",
+    "Shopping",
+    "Rent",
+    "Payment",
     "More"
   ];
-
 
   @override
   Widget build(BuildContext context) {
 
     var feed = ref.watch(feedProvider);
+    var featured = ref.watch(featureProvider);
 
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.8,
@@ -110,7 +109,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            context.push("/convoList");
+                          },
                           icon: Icon(
                             CupertinoIcons.chat_bubble_text,
                             color: AppColors().secondary,
@@ -159,7 +160,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       Container(
                         height: 70,
                         margin: const EdgeInsets.symmetric(horizontal: 35),
-                        padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+                        padding: const EdgeInsets.only(top: 5, bottom: 5, left: 20, right: 20),
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
@@ -168,36 +169,60 @@ class _HomeViewState extends ConsumerState<HomeView> {
                               width: 2,
                             )
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: List.generate(cat.length, (index){
-                            return InkWell(
-                              onTap: () {
-                                showMaterialModalBottomSheet(
-                                  context: context,
-                                  expand: true,
-                                  builder: (context){
-                                   return UCategoryView(category: str[index],);
-                                 },
+                        child: featured.when(
+                          data: (data){
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: List.generate(data.docs.length, (index){
+                                return FutureBuilder(
+                                  future: FirebaseFirestore.instance.collection("Users").doc(data.docs[index]["ID"]).get(),
+                                  builder: (context, result){
+                                    if(result.hasData){
+                                      return InkWell(
+                                        onTap: () {
+
+                                        },
+                                        child: SizedBox(
+                                          width: 50,
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 17,
+                                                backgroundImage: NetworkImage(result.data!["Image"]),
+                                              ),
+                                              Text(
+                                                result.data!["Name"],
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 12,
+                                                  color: AppColors().black,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    return SizedBox();
+                                  },
                                 );
-                              },
-                              child: Column(
-                                children: [
-                                  Icon(
-                                      cat[index]
-                                  ),
-                                  Text(
-                                    str[index],
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 14,
-                                      color: AppColors().black,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              }),
                             );
-                          }),
+                          },
+                          error: (error, stack){
+                            return const Center(
+                              child: Text("Error"),
+                            );
+                          },
+                          loading: (){
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
                         ),
                       ),
                       const SizedBox(height: 15,),
@@ -410,7 +435,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 child: const Icon(CupertinoIcons.search),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

@@ -28,6 +28,26 @@ class FirestoreService{
     });
   }
 
+  void convertToSeller(id){
+    FirebaseFirestore.instance.collection("Users").doc(id).update({
+      "Type": "Seller",
+    });
+  }
+
+  Future<void> addFeature(id) async {
+    final DocumentReference docRef = FirebaseFirestore.instance.collection("Featured").doc(id);
+    final DocumentSnapshot docSnap = await docRef.get();
+    bool exist = docSnap.exists;
+
+    if(!exist){
+      FirebaseFirestore.instance.collection("Featured").doc(id).set({
+        "ID": id,
+      });
+      Fluttertoast.showToast(msg: "Seller is now featured");
+    } else {
+      Fluttertoast.showToast(msg: "Seller already featured");
+    }
+  }
 
   Future<String> checkUserType(id) async {
     var doc = await instance.collection("Users").doc(id).get();

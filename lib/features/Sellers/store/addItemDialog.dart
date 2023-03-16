@@ -38,20 +38,20 @@ class _AddItemDialogState extends ConsumerState<AddItemDialog> {
       child: Text("School"),
     ),
     const DropdownMenuItem(
-      value: "Furniture",
-      child: Text("Furniture"),
+      value: "Print",
+      child: Text("Print"),
     ),
     const DropdownMenuItem(
-      value: "Lights",
-      child: Text("Lights"),
+      value: "Bookbind",
+      child: Text("Bookbind"),
     ),
     const DropdownMenuItem(
-      value: "Tents",
-      child: Text("Tents"),
+      value: "Merch",
+      child: Text("Merch"),
     ),
     const DropdownMenuItem(
-      value: "Tools",
-      child: Text("Tools"),
+      value: "More",
+      child: Text("More"),
     ),
   ];
 
@@ -138,6 +138,7 @@ class _AddItemDialogState extends ConsumerState<AddItemDialog> {
                           SizedBox(
                             height: 50,
                             child: TextFormField(
+                              keyboardType: TextInputType.number,
                               controller: price,
                               validator: (value){
                                 if(value!.isEmpty){

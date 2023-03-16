@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:qcu/common/payment/PaymentView.dart';
 import 'package:qcu/features/ViewModels/UserViewModel.dart';
 
 import '../../cosntants/colors.dart';
@@ -266,15 +267,16 @@ class _CartViewState extends ConsumerState<CartView> {
                           Expanded(
                             child: InkWell(
                               onTap: () {
-                                if (data.data()!["Cart"].isNotEmpty && data.data()!["Name"].toString() != "") {
-                                  FirestoreService().createOrder(
-                                    data.data()!["Cart"],
-                                    data.data()!["Name"],
-                                    "Contact No.",
-                                    "123 Sample Address",
-                                  );
-                                  Fluttertoast.showToast(msg: "Order placed successfully");
 
+                                if (data.data()!["Cart"].isNotEmpty && data.data()!["Name"].toString() != "") {
+                                  showDialog(context: context, builder: (builder){
+                                    return PaymentView(
+                                      name: data.data()!["Name"],
+                                      cart: data.data()!["Cart"],
+                                      address: data.data()!["Address"],
+                                      contact: data.data()!["Contact"],
+                                    );
+                                  });
                                 } else {
                                   Fluttertoast.showToast(msg: "No items in basket or you have not filled up your profile yet");
                                 }

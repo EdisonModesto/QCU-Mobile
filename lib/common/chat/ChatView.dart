@@ -48,7 +48,6 @@ class _ChatViewState extends ConsumerState<ChatView> {
     "FB",
     "Messenger",
     "Instagram",
-    "IG",
     "Insta",
     "Twitter",
     "Telegram",

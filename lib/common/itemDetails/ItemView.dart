@@ -8,6 +8,8 @@ import 'package:qcu/services/AuthService.dart';
 import 'package:qcu/services/FirestoreService.dart';
 
 import '../cart/AddToCartSheet.dart';
+import '../cart/BuyNowSheet.dart';
+import '../payment/PaymentView.dart';
 
 class ItemView extends ConsumerStatefulWidget {
   const ItemView({
@@ -92,22 +94,50 @@ class _ItemViewState extends ConsumerState<ItemView> {
                           ),
                         ],
                       ),
-                      IconButton(
-                        onPressed: () {
-                          showMaterialModalBottomSheet(
-                            context: context,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
+                      Row(
+                        children: [
+                          TextButton(
+                            onPressed: (){
+                              showMaterialModalBottomSheet(
+                                context: context,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
+                                ),
+                                builder: (context) => BuyNowSheet(
+                                  id: widget.id,
+                                ),
+                              );
+                            },
+                            child: Text(
+                              "Buy Now",
+                              style: GoogleFonts.poppins(
+                                color:AppColors().primary,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            builder: (context) => AddToCartSheet(
-                              id: widget.id,
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.shopping_basket_outlined),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showMaterialModalBottomSheet(
+                                context: context,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
+                                ),
+                                builder: (context) => AddToCartSheet(
+                                  id: widget.id,
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.shopping_basket_outlined),
+                          ),
+                        ],
                       ),
                     ],
                   ),

@@ -77,6 +77,18 @@ class FirestoreService{
     });
   }
 
+  Future<void> updateItem(id, name, price, description, image, seller, category, stock) async {
+    FirebaseFirestore.instance.collection("Items").doc(id).update({
+      "Name" : name,
+      "Price" : price,
+      "Description" : description,
+      "Image" : image,
+      "Seller" : seller,
+      "Category" : category,
+      "Stock" : stock,
+    });
+  }
+
   void deleteItem(id){
     instance.collection("Items").doc(id).delete();
   }
@@ -116,6 +128,7 @@ class FirestoreService{
 
     FirebaseFirestore.instance.collection("Orders").doc().set({
       "User": AuthService().getID(),
+      //"Seller": seller,
       "Items": items,
       "Status": "0",
       "Name": name,

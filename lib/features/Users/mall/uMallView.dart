@@ -23,9 +23,12 @@ class MallView extends ConsumerStatefulWidget {
 
 class _MallViewState extends ConsumerState<MallView> {
 
+  TextEditingController searchController = TextEditingController();
 
   // TODO: Add _bannerAd
   BannerAd? _bannerAd;
+
+
 
   @override
   void initState() {
@@ -50,6 +53,7 @@ class _MallViewState extends ConsumerState<MallView> {
 
   @override
   void dispose() {
+    searchController.dispose();
     _bannerAd?.dispose();
     super.dispose();
   }
@@ -118,6 +122,10 @@ class _MallViewState extends ConsumerState<MallView> {
             SizedBox(
               height: 50,
               child: TextField(
+                controller: searchController,
+                onChanged: (val){
+                  setState(() {});
+                },
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     Icons.search,
@@ -159,7 +167,9 @@ class _MallViewState extends ConsumerState<MallView> {
             Expanded(
               child: feed.when(
                 data: (data){
-                  return GridView.count(
+                  var searchResult = data.docs.where((element) => element.data()["Name"].toString().toLowerCase().contains(searchController.text.toLowerCase())).toList();
+                  return searchController.text == "" ?
+                  GridView.count(
                     padding: const EdgeInsets.all(0),
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,
@@ -239,7 +249,89 @@ class _MallViewState extends ConsumerState<MallView> {
                         ),
                       );
                     }),
-                  );
+                  )
+                      :
+                  GridView.count(
+                    padding: const EdgeInsets.all(0),
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 0.8,
+                    children: List.generate(searchResult.length, (index){
+                      return InkWell(
+                        onTap: () {
+                          showMaterialModalBottomSheet(
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                            ),
+                            builder: (context) => ItemView(
+                              url: searchResult[index].data()["Image"],
+                              name: searchResult[index].data()["Name"],
+                              price:searchResult[index].data()["Price"],
+                              description: searchResult[index].data()["Description"],
+                              stock:searchResult[index].data()["Stock"],
+                              seller: searchResult[index].data()["Seller"],
+                              category: searchResult[index].data()["Category"],
+                              id: searchResult[index].id,
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: AppColors().primary,
+                                width: 2,
+                              )),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(8),
+                                          topRight: Radius.circular(8),
+                                        ),
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                searchResult[index]
+                                                    .data()["Image"]),
+                                            fit: BoxFit.cover)),
+                                  )),
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      searchResult[index].data()["Name"],
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Text(
+                                      "PHP ${searchResult[index].data()["Price"]}",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+                  ) ;
                 },
                 error: (error, stack){
                   return Center(

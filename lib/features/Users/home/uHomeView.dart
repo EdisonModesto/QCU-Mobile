@@ -30,28 +30,20 @@ class _HomeViewState extends ConsumerState<HomeView>  {
   TextEditingController searchCtrl = TextEditingController();
 
   var cat2 = [
-    Icons.book_outlined,
-    Icons.chair_alt,
-    Icons.lightbulb_outline,
-    Icons.warehouse_outlined,
-    Icons.build_outlined,
     Icons.emoji_food_beverage_outlined,
-    Icons.shopping_cart_outlined,
-    Icons.house_outlined,
-    Icons.payment_outlined,
+    Icons.book_outlined,
+    Icons.print_outlined,
+    Icons.menu_book_outlined,
+    CupertinoIcons.tag,
     Icons.more_horiz_outlined,
   ];
 
   var str2 = [
-    "School",
-    "Furniture",
-    "Lights",
-    "Tents",
-    "Tools",
     "Food",
-    "Shopping",
-    "Rent",
-    "Payment",
+    "School",
+    "Print",
+    "Bookbind",
+    "Merch",
     "More"
   ];
 

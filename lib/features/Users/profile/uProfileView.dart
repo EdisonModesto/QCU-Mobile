@@ -40,6 +40,11 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
     return total;
   }
 
+  Future<Map<String, dynamic>?> getResource(id) async {
+    var snapshot = await FirebaseFirestore.instance.collection("Items").doc(id).get();
+    return snapshot.data();
+  }
+
   // TODO: Add _bannerAd
   BannerAd? _bannerAd;
 
@@ -336,87 +341,93 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                               ListView.separated(
                                 itemCount: toPay.length,
                                 itemBuilder: (context, index){
-                                  return InkWell(
-                                    onTap: (){
-                                      showMaterialModalBottomSheet(
-                                          context: context,
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(20),
-                                            ),
-                                          ),
-                                          builder: (context){
-                                            return OrderDetailsView(
-                                              orderData: toPay[index],
+                                  return FutureBuilder(
+                                    future: getResource(toPay[index].data()["Items"][0].toString().split(",")[0]),
+                                    builder: (context, snapshot){
+                                      if(snapshot.hasData){
+                                        return InkWell(
+                                          onTap: (){
+                                            showMaterialModalBottomSheet(
+                                                context: context,
+                                                shape: const RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.vertical(
+                                                    top: Radius.circular(20),
+                                                  ),
+                                                ),
+                                                builder: (context){
+                                                  return OrderDetailsView(
+                                                    orderData: toPay[index],
+                                                  );
+                                                }
                                             );
-                                          }
-                                      );
-                                    },
-                                    child: Container(
-                                      height: 100,
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[200],
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 100,
+                                          },
+                                          child: Container(
                                             height: 100,
+                                            width: double.infinity,
                                             decoration: BoxDecoration(
-                                              color: AppColors().primary,
+                                              color: Colors.grey[200],
                                               borderRadius: BorderRadius.circular(10),
                                             ),
-                                            child: const Icon(
-                                              CupertinoIcons.money_dollar_circle,
-                                              color: Colors.white,
-                                              size: 50,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 10),
-                                          Expanded(
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                            child: Row(
                                               children: [
-                                                Text(
-                                                  toPay[index].id,
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w400,
+                                                Container(
+                                                  width: 100,
+                                                  height: 100,
+                                                  decoration: BoxDecoration(
+                                                    color: AppColors().primary,
+                                                    borderRadius: BorderRadius.circular(10),
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(snapshot.data!["Image"]),
+                                                    ),
                                                   ),
                                                 ),
-                                                const SizedBox(height: 5),
-                                                Text(
-                                                  "Total Items: ${toPay[index].data()["Items"].length}",
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w400,
+                                                const SizedBox(width: 10),
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        snapshot.data!["Name"],
+                                                        style: GoogleFonts.poppins(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 5),
+                                                      Text(
+                                                        "Total Items: ${toPay[index].data()["Items"].length}",
+                                                        style: GoogleFonts.poppins(
+                                                          fontSize: 12,
+                                                          fontWeight: FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 5),
+                                                      FutureBuilder(
+                                                          future: calculateTotal(toPay[index].data()["Items"]),
+                                                          builder: (context, result) {
+                                                            if(result.hasData){
+                                                              return Text(
+                                                                "Total Price: ${result.data}",
+                                                                style: GoogleFonts.poppins(
+                                                                  fontSize: 12,
+                                                                  fontWeight: FontWeight.w400,
+                                                                ),
+                                                              );
+                                                            }
+                                                            return const SizedBox();
+                                                          }
+                                                      ),
+                                                    ],
                                                   ),
-                                                ),
-                                                const SizedBox(height: 5),
-                                                FutureBuilder(
-                                                    future: calculateTotal(toPay[index].data()["Items"]),
-                                                    builder: (context, result) {
-                                                      if(result.hasData){
-                                                        return Text(
-                                                          "Total Price: ${result.data}",
-                                                          style: GoogleFonts.poppins(
-                                                            fontSize: 12,
-                                                            fontWeight: FontWeight.w400,
-                                                          ),
-                                                        );
-                                                      }
-                                                      return const SizedBox();
-                                                    }
                                                 ),
                                               ],
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
+                                        );
+                                      }
+                                      return const SizedBox();
+                                    },
                                   );
                                 },
                                 separatorBuilder: (context, index) => const SizedBox(height: 10),
@@ -424,87 +435,90 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                               ListView.separated(
                                 itemCount: preparing.length,
                                 itemBuilder: (context, index){
-                                  return InkWell(
-                                    onTap: (){
-                                      showMaterialModalBottomSheet(
-                                          context: context,
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(20),
-                                            ),
+                                  return FutureBuilder(
+                                    future: getResource(preparing[index].data()["Items"][0].toString().split(",")[0]),
+                                    builder: (context, snapshot){
+                                      return InkWell(
+                                        onTap: (){
+                                          showMaterialModalBottomSheet(
+                                              context: context,
+                                              shape: const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.vertical(
+                                                  top: Radius.circular(20),
+                                                ),
+                                              ),
+                                              builder: (context){
+                                                return OrderDetailsView(
+                                                  orderData: preparing[index],
+                                                );
+                                              }
+                                          );
+                                        },
+                                        child: Container(
+                                          height: 100,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            borderRadius: BorderRadius.circular(10),
                                           ),
-                                          builder: (context){
-                                            return OrderDetailsView(
-                                              orderData: preparing[index],
-                                            );
-                                          }
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: 100,
+                                                height: 100,
+                                                decoration: BoxDecoration(
+                                                  color: AppColors().primary,
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(snapshot.data!["Image"]),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      snapshot.data!["Name"],
+                                                      style: GoogleFonts.poppins(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.w400,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 5),
+                                                    Text(
+                                                      "Total Items: ${preparing[index].data()["Items"].length}",
+                                                      style: GoogleFonts.poppins(
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.w400,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 5),
+                                                    FutureBuilder(
+                                                        future: calculateTotal(preparing[index].data()["Items"]),
+                                                        builder: (context, result) {
+                                                          if(result.hasData){
+                                                            return Text(
+                                                              "Total Price: ${result.data}",
+                                                              style: GoogleFonts.poppins(
+                                                                fontSize: 12,
+                                                                fontWeight: FontWeight.w400,
+                                                              ),
+                                                            );
+                                                          }
+                                                          return const SizedBox();
+                                                        }
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       );
                                     },
-                                    child: Container(
-                                      height: 100,
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[200],
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 100,
-                                            height: 100,
-                                            decoration: BoxDecoration(
-                                              color: AppColors().primary,
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                            child: const Icon(
-                                              CupertinoIcons.cube_box,
-                                              color: Colors.white,
-                                              size: 50,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 10),
-                                          Expanded(
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  preparing[index].id,
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 5),
-                                                Text(
-                                                  "Total Items: ${preparing[index].data()["Items"].length}",
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 5),
-                                                FutureBuilder(
-                                                    future: calculateTotal(preparing[index].data()["Items"]),
-                                                    builder: (context, result) {
-                                                      if(result.hasData){
-                                                        return Text(
-                                                          "Total Price: ${result.data}",
-                                                          style: GoogleFonts.poppins(
-                                                            fontSize: 12,
-                                                            fontWeight: FontWeight.w400,
-                                                          ),
-                                                        );
-                                                      }
-                                                      return const SizedBox();
-                                                    }
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
                                   );
                                 },
                                 separatorBuilder: (context, index) => const SizedBox(height: 10),
@@ -512,98 +526,101 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                               ListView.separated(
                                 itemCount: forPickup.length,
                                 itemBuilder: (context, index){
-                                  return InkWell(
-                                    onTap: (){
-                                      showMaterialModalBottomSheet(
-                                          context: context,
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(20),
-                                            ),
+                                  return FutureBuilder(
+                                    future: getResource(forPickup[index].data()["Items"][0].toString().split(",")[0]),
+                                    builder: (context, snapshot){
+                                      return InkWell(
+                                        onTap: (){
+                                          showMaterialModalBottomSheet(
+                                              context: context,
+                                              shape: const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.vertical(
+                                                  top: Radius.circular(20),
+                                                ),
+                                              ),
+                                              builder: (context){
+                                                return OrderDetailsView(
+                                                  orderData: forPickup[index],
+                                                );
+                                              }
+                                          );
+                                        },
+                                        child: Container(
+                                          height: 100,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            borderRadius: BorderRadius.circular(10),
                                           ),
-                                          builder: (context){
-                                            return OrderDetailsView(
-                                              orderData: forPickup[index],
-                                            );
-                                          }
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: 100,
+                                                height: 100,
+                                                decoration: BoxDecoration(
+                                                  color: AppColors().primary,
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(snapshot.data!["Image"]),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      snapshot.data!["Name"],
+                                                      style: GoogleFonts.poppins(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.w400,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 5),
+                                                    Text(
+                                                      "Total Items: ${forPickup[index].data()["Items"].length}",
+                                                      style: GoogleFonts.poppins(
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.w400,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 5),
+                                                    FutureBuilder(
+                                                        future: calculateTotal(forPickup[index].data()["Items"]),
+                                                        builder: (context, result) {
+                                                          if(result.hasData){
+                                                            return Text(
+                                                              "Total Price: ${result.data}",
+                                                              style: GoogleFonts.poppins(
+                                                                fontSize: 12,
+                                                                fontWeight: FontWeight.w400,
+                                                              ),
+                                                            );
+                                                          }
+                                                          return const SizedBox();
+                                                        }
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              IconButton(
+                                                onPressed:(){
+                                                  //  FirestoreService().updateOrderStatus(toRecieve[index].id, "3");
+                                                },
+                                                icon: const Icon(
+                                                  CupertinoIcons.cube_box,
+                                                  color: Colors.black,
+                                                  size: 30,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
                                       );
                                     },
-                                    child: Container(
-                                      height: 100,
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[200],
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 100,
-                                            height: 100,
-                                            decoration: BoxDecoration(
-                                              color: AppColors().primary,
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                            child: const Icon(
-                                              Icons.receipt_long_outlined,
-                                              color: Colors.white,
-                                              size: 50,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 10),
-                                          Expanded(
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  forPickup[index].id,
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 5),
-                                                Text(
-                                                  "Total Items: ${forPickup[index].data()["Items"].length}",
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 5),
-                                                FutureBuilder(
-                                                    future: calculateTotal(forPickup[index].data()["Items"]),
-                                                    builder: (context, result) {
-                                                      if(result.hasData){
-                                                        return Text(
-                                                          "Total Price: ${result.data}",
-                                                          style: GoogleFonts.poppins(
-                                                            fontSize: 12,
-                                                            fontWeight: FontWeight.w400,
-                                                          ),
-                                                        );
-                                                      }
-                                                      return const SizedBox();
-                                                    }
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          const SizedBox(width: 10),
-                                          IconButton(
-                                            onPressed:(){
-                                            //  FirestoreService().updateOrderStatus(toRecieve[index].id, "3");
-                                            },
-                                            icon: const Icon(
-                                              CupertinoIcons.cube_box,
-                                              color: Colors.black,
-                                              size: 30,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
                                   );
                                 },
                                 separatorBuilder: (context, index) => const SizedBox(height: 10),

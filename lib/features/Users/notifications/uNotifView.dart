@@ -1,6 +1,7 @@
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:go_router/go_router.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:modal_bottom_sheet/modal_bottom_sheet.dart";
 
@@ -68,7 +69,9 @@ class _NotifViewState extends ConsumerState<NotifView> {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            context.push("/convoList");
+                          },
                           icon: Icon(
                             CupertinoIcons.chat_bubble_text,
                             color: AppColors().secondary,

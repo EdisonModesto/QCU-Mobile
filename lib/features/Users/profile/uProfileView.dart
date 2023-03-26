@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:qcu/common/orders/CancelDialog.dart';
 import 'package:qcu/features/Users/profile/uEditProfileDialog.dart';
 import 'package:qcu/services/AuthService.dart';
 import 'package:qcu/services/FirestoreService.dart';
@@ -141,7 +142,9 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                               ),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                context.push("/convoList");
+                              },
                               icon: Icon(
                                 CupertinoIcons.chat_bubble_text,
                                 color: AppColors().secondary,
@@ -378,6 +381,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                                     borderRadius: BorderRadius.circular(10),
                                                     image: DecorationImage(
                                                       image: NetworkImage(snapshot.data!["Image"]),
+                                                      fit: BoxFit.cover,
                                                     ),
                                                   ),
                                                 ),
@@ -420,6 +424,14 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                                       ),
                                                     ],
                                                   ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: (){
+                                                    showDialog(context: context, builder: (builder){
+                                                      return CancelDialog(orderID: toPay[index].id,);
+                                                    });
+                                                  },
+                                                  icon: const Icon(Icons.cancel_outlined),
                                                 ),
                                               ],
                                             ),
@@ -471,6 +483,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                                   borderRadius: BorderRadius.circular(10),
                                                   image: DecorationImage(
                                                     image: NetworkImage(snapshot.data!["Image"]),
+                                                    fit: BoxFit.cover,
                                                   ),
                                                 ),
                                               ),
@@ -562,6 +575,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                                   borderRadius: BorderRadius.circular(10),
                                                   image: DecorationImage(
                                                     image: NetworkImage(snapshot.data!["Image"]),
+                                                    fit: BoxFit.cover,
+
                                                   ),
                                                 ),
                                               ),

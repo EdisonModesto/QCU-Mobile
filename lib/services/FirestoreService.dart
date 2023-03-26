@@ -120,7 +120,7 @@ class FirestoreService{
     }
   }
 
-  Future<void> createOrder(items, name, contact, address) async {
+  Future<void> createOrder(items, name, contact, address, delivery, mop) async {
 
     FirebaseFirestore.instance.collection("Users").doc(AuthService().getID()).update({
       "Cart": [],
@@ -134,6 +134,8 @@ class FirestoreService{
       "Name": name,
       "Contact": contact,
       "Address": address,
+      "Delivery": delivery,
+      "MOP": mop,
       //"Date": DateTime.now().toString(),
     });
 
@@ -152,6 +154,10 @@ class FirestoreService{
     FirebaseFirestore.instance.collection("Orders").doc(id).update({
       "Status": status,
     });
+  }
+
+  void cancelOrder(id){
+    FirebaseFirestore.instance.collection("Orders").doc(id).delete();
   }
 
 }

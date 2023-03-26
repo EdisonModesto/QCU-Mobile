@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:qcu/common/payment/DeliveryDialog.dart';
 import 'package:qcu/features/ViewModels/UserViewModel.dart';
 
 import '../../cosntants/colors.dart';
@@ -9,10 +10,12 @@ import '../payment/PaymentView.dart';
 class BuyNowSheet extends ConsumerStatefulWidget {
   const BuyNowSheet({
     required this.id,
+    required this.sellerID,
     Key? key,
   }) : super(key: key);
 
   final String id;
+  final String sellerID;
 
   @override
   ConsumerState createState() => _BuyNowSheetState();
@@ -34,7 +37,7 @@ class _BuyNowSheetState extends ConsumerState<BuyNowSheet> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Add to Basket",
+                "Buy Now",
                 style: GoogleFonts.poppins(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
@@ -118,11 +121,12 @@ class _BuyNowSheetState extends ConsumerState<BuyNowSheet> {
                     return ElevatedButton(
                       onPressed: () {
                         showDialog(context: context, builder: (builder){
-                          return PaymentView(
+                          return DeliveryDialog(
                             name: data.data()!["Name"],
                             cart: ["${widget.id},$value"],
                             address: data.data()!["Address"],
                             contact: data.data()!["Contact"],
+                            sellerID: widget.sellerID,
                           );
                         });
                         // FirestoreService().addToCart(AuthService().getID(), widget.id, value);

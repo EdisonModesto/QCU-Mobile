@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +14,7 @@ import 'package:qcu/features/Users/home/uCategoryView.dart';
 
 import '../../../common/cart/CartView.dart';
 import '../../../common/itemDetails/ItemView.dart';
+import '../../../cosntants/strings.dart';
 import '../../../services/AdMob/ad_helper.dart';
 import '../../ViewModels/FeedViewModel.dart';
 
@@ -46,6 +48,7 @@ class _HomeViewState extends ConsumerState<HomeView>  {
     "Merch",
     "More"
   ];
+  FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +122,7 @@ class _HomeViewState extends ConsumerState<HomeView>  {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Container(
+                      /*Container(
                         height: 125,
                         width: MediaQuery.of(context).size.width,
                         color: AppColors().primary,
@@ -147,8 +150,68 @@ class _HomeViewState extends ConsumerState<HomeView>  {
                                 ),
                           ),
                         ),
+                      ),*/
+                      Padding(
+                        padding: const EdgeInsets.only(left: 35, right: 35,),
+                        child: SizedBox(
+                          height: 50,
+                          child: TextField(
+                            controller: searchCtrl,
+                            focusNode: _focusNode,
+                            onTap: () {
+                              _focusNode.unfocus();
+                              context.push("/search");
+                            },
+                            decoration: InputDecoration(
+                              label: AnimatedTextKit(
+                                animatedTexts: List.generate(Strings().suggestions.length, (index){
+                                  return RotateAnimatedText(
+                                    Strings().suggestions[index],
+                                    textAlign: TextAlign.start,
+                                    alignment: Alignment.centerLeft,
+                                    textStyle: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      color: Color(0xff414141),
+                                    ),
+                                   // speed: const Duration(milliseconds: 500),
+                                  );
+                                })
+                              ),
+                              contentPadding: const EdgeInsets.only(left: 40, right: 40),
+                              hintStyle: GoogleFonts.poppins(
+                                fontSize: 14,
+                                color: AppColors().primary,
+                              ),
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: AppColors().primary,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(100),
+                                borderSide: BorderSide(
+                                  color: AppColors().primary,
+                                  width: 2,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(100),
+                                borderSide: BorderSide(
+                                  color: AppColors().primary,
+                                  width: 2,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(100),
+                                borderSide: BorderSide(
+                                  color: AppColors().primary,
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                      const SizedBox(height: 25,),
+                      const SizedBox(height: 15,),
                       Container(
                         height: 70,
                         margin: const EdgeInsets.symmetric(horizontal: 35),
@@ -416,17 +479,6 @@ class _HomeViewState extends ConsumerState<HomeView>  {
                 ),
               )
             ]
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Transform.translate(
-              offset: const Offset(-25, -25),
-              child: FloatingActionButton(
-                onPressed: () {},
-                backgroundColor: AppColors().primary,
-                child: const Icon(CupertinoIcons.search),
-              ),
-            ),
           ),
         ],
       ),

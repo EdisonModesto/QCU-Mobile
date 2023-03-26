@@ -1,6 +1,8 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -8,6 +10,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../../common/cart/CartView.dart';
 import '../../../common/itemDetails/ItemView.dart';
 import '../../../cosntants/colors.dart';
+import '../../../cosntants/strings.dart';
 import '../../../services/AdMob/ad_helper.dart';
 import '../../ViewModels/FeedViewModel.dart';
 
@@ -108,7 +111,9 @@ class _MallViewState extends ConsumerState<MallView> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        context.push("/convoList");
+                      },
                       icon: Icon(
                         CupertinoIcons.chat_bubble_text,
                         color: AppColors().secondary,
@@ -134,7 +139,20 @@ class _MallViewState extends ConsumerState<MallView> {
                   contentPadding: const EdgeInsets.only(left: 20, right: 20),
                   filled: true,
                   fillColor: Colors.white,
-                  hintText: "Search",
+                  label: AnimatedTextKit(
+                      animatedTexts: List.generate(Strings().suggestions.length, (index){
+                        return RotateAnimatedText(
+                          Strings().suggestions[index],
+                          textAlign: TextAlign.start,
+                          alignment: Alignment.centerLeft,
+                          textStyle: GoogleFonts.poppins(
+                            fontSize: 14,
+                            color: Color(0xff414141),
+                          ),
+                          // speed: const Duration(milliseconds: 500),
+                        );
+                      })
+                  ),
                   hintStyle: GoogleFonts.poppins(
                       fontSize: 14,
                       color: AppColors().black

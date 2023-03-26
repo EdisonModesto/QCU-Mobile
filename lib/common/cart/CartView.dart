@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:qcu/common/payment/DeliveryDialog.dart';
 import 'package:qcu/common/payment/PaymentView.dart';
 import 'package:qcu/features/ViewModels/UserViewModel.dart';
 
@@ -270,11 +271,12 @@ class _CartViewState extends ConsumerState<CartView> {
 
                                 if (data.data()!["Cart"].isNotEmpty && data.data()!["Name"].toString() != "") {
                                   showDialog(context: context, builder: (builder){
-                                    return PaymentView(
+                                    return DeliveryDialog(
                                       name: data.data()!["Name"],
                                       cart: data.data()!["Cart"],
                                       address: data.data()!["Address"],
                                       contact: data.data()!["Contact"],
+                                      sellerID: "",
                                     );
                                   });
                                 } else {

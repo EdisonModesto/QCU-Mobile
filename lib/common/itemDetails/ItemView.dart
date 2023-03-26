@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qcu/cosntants/colors.dart';
@@ -108,6 +110,7 @@ class _ItemViewState extends ConsumerState<ItemView> {
                                 ),
                                 builder: (context) => BuyNowSheet(
                                   id: widget.id,
+                                  sellerID: widget.seller,
                                 ),
                               );
                             },
@@ -183,6 +186,18 @@ class _ItemViewState extends ConsumerState<ItemView> {
                           ),
                         ],
                       ),
+                      const Spacer(),
+                      IconButton(
+                        icon: const Icon(
+                          CupertinoIcons.chat_bubble_text
+                        ),
+                        onPressed: (){
+                          context.pushNamed("chat", params: {
+                            "seller": widget.seller,
+                            "buyer": AuthService().getID(),
+                          });
+                        },
+                      )
                     ],
                   ),
                 ),

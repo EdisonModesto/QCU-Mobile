@@ -102,7 +102,8 @@ class PaymentView extends ConsumerWidget {
                             name,
                             contact,
                             address,
-
+                            "delivery",
+                            "gcash"
                           );
                           Fluttertoast.showToast(msg: "Order placed successfully");
                           Navigator.pop(context);

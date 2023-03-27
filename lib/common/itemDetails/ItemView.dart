@@ -157,10 +157,17 @@ class _ItemViewState extends ConsumerState<ItemView> {
                   ),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.store_mall_directory_outlined,
-                        color: AppColors().primary,
-                        size: 35,
+                      InkWell(
+                        onTap: () {
+                          context.pushNamed("sellerStore", params: {
+                            "sellerID": widget.seller,
+                          });
+                        },
+                        child: Icon(
+                          Icons.store_mall_directory_outlined,
+                          color: AppColors().primary,
+                          size: 35,
+                        ),
                       ),
                       const SizedBox(width: 20),
                       Column(

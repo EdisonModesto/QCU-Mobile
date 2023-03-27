@@ -236,7 +236,9 @@ class _HomeViewState extends ConsumerState<HomeView>  {
                                     if(result.hasData){
                                       return InkWell(
                                         onTap: () {
-
+                                          context.pushNamed("sellerStore", params: {
+                                            "sellerID":data.docs[index]["ID"],
+                                          });
                                         },
                                         child: SizedBox(
                                           width: 50,

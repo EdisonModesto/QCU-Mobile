@@ -173,7 +173,9 @@ class _AAccountsViewState extends ConsumerState<AAccountsView> {
                     child: Row(
                       children: [
                         const CircleAvatar(
+                          backgroundColor: Colors.transparent,
                           backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
+
                         ),
                         const SizedBox(width: 20,),
                         Column(

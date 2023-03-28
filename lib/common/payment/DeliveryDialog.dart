@@ -82,7 +82,8 @@ class DeliveryDialog extends ConsumerWidget {
                                       contact,
                                       address,
                                       "pickup",
-                                      "cash"
+                                      "cash",
+                                      sellerID,
                                   );
                                   Fluttertoast.showToast(msg: "Order placed successfully!");
                                   ChatService().sendMessage(
@@ -127,7 +128,8 @@ class DeliveryDialog extends ConsumerWidget {
                                       contact,
                                       address,
                                       "delivery",
-                                      "cash"
+                                      "cash",
+                                      sellerID,
                                   );
                                   Fluttertoast.showToast(msg: "Order placed successfully!");
                                   Navigator.of(context).pop();
@@ -143,6 +145,7 @@ class DeliveryDialog extends ConsumerWidget {
                                       name: name,
                                       contact: contact,
                                       address: address,
+                                      sellerID: sellerID,
                                     );
                                   });
                                   Navigator.of(context).pop();

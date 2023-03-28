@@ -135,6 +135,7 @@ class _ItemViewState extends ConsumerState<ItemView> {
                                 ),
                                 builder: (context) => AddToCartSheet(
                                   id: widget.id,
+                                  seller: widget.seller,
                                 ),
                               );
                             },

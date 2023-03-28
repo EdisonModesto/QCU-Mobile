@@ -80,6 +80,8 @@ class _SellerVisitViewState extends ConsumerState<SellerVisitView> {
                       children: [
                         const CircleAvatar(
                           backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
+                          backgroundColor: Colors.transparent,
+
                         ),
                         const SizedBox(width: 20,),
                         Text(

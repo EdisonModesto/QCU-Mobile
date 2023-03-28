@@ -9,8 +9,12 @@ import '../../services/FirestoreService.dart';
 class AddToCartSheet extends ConsumerStatefulWidget {
   const AddToCartSheet({
     required this.id,
+    required this.seller,
     Key? key,
   }) : super(key: key);
+
+
+  final seller;
 
   final String id;
 
@@ -114,7 +118,7 @@ class _AddToBasketSheetState extends ConsumerState<AddToCartSheet> {
               const SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {
-                  FirestoreService().addToCart(AuthService().getID(), widget.id, value);
+                  FirestoreService().addToCart(AuthService().getID(), widget.id, value, widget.seller);
                   //FirestoreService().addToBasket(widget.id, value);
                   Navigator.pop(context);
                 },

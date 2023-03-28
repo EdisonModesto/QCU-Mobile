@@ -74,6 +74,7 @@ flutter_icons:
   ios: true
   image_path: "assets/images/QCUlogo.jpg"
   min_sdk_android: 21 # android min sdk min:16, default 21
+  adaptive_icon_background: "#ed1e79"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

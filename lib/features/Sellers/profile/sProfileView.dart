@@ -36,6 +36,8 @@ class _SProfileViewState extends ConsumerState<SProfileView> {
                     children: [
                       const CircleAvatar(
                         backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
+                        backgroundColor: Colors.transparent,
+
                       ),
                       const SizedBox(width: 20,),
                       Text(
@@ -150,9 +152,10 @@ class _SProfileViewState extends ConsumerState<SProfileView> {
                             Row(
                               children: [
                                 CircleAvatar(
-                                  backgroundColor: AppColors().primary,
+                                  backgroundColor: Colors.transparent,
                                   radius: 15,
                                   backgroundImage: const AssetImage("assets/images/QCUlogo.jpg"),
+
                                 ),
                                 Text(
                                   "Review Name",

@@ -123,14 +123,14 @@ class _BuyNowSheetState extends ConsumerState<BuyNowSheet> {
                         showDialog(context: context, builder: (builder){
                           return DeliveryDialog(
                             name: data.data()!["Name"],
-                            cart: ["${widget.id},$value"],
+                            cart: ["${widget.id},$value,${widget.sellerID}"],
                             address: data.data()!["Address"],
                             contact: data.data()!["Contact"],
                             sellerID: widget.sellerID,
                           );
                         });
                         // FirestoreService().addToCart(AuthService().getID(), widget.id, value);
-                        //FirestoreService().addToBasket(widget.id, value);
+                        // FirestoreService().addToBasket(widget.id, value);
 
                         Navigator.pop(context);
                       },

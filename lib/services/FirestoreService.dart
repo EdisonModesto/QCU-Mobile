@@ -93,7 +93,7 @@ class FirestoreService{
     instance.collection("Items").doc(id).delete();
   }
 
-  Future<void> addToCart(id, item, quantity) async {
+  Future<void> addToCart(id, item, quantity, sellerID) async {
     var ref = await instance.collection("Users").doc(id).get();
     List<dynamic> cart = ref.data()!["Cart"] as List<dynamic>;
     if(cart.contains(item)){
@@ -101,7 +101,7 @@ class FirestoreService{
     }
     else{
       instance.collection("Users").doc(id).update({
-        "Cart" : FieldValue.arrayUnion(["$item,$quantity"]),
+        "Cart" : FieldValue.arrayUnion(["$item,$quantity,$sellerID"]),
       });
      Fluttertoast.showToast(msg: "Item added to cart");
     }
@@ -120,7 +120,7 @@ class FirestoreService{
     }
   }
 
-  Future<void> createOrder(items, name, contact, address, delivery, mop) async {
+  Future<void> createOrder(items, name, contact, address, delivery, mop, sellerID) async {
 
     FirebaseFirestore.instance.collection("Users").doc(AuthService().getID()).update({
       "Cart": [],
@@ -128,7 +128,7 @@ class FirestoreService{
 
     FirebaseFirestore.instance.collection("Orders").doc().set({
       "User": AuthService().getID(),
-      //"Seller": seller,
+      "Seller": sellerID,
       "Items": items,
       "Status": "0",
       "Name": name,

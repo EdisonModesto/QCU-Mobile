@@ -58,6 +58,8 @@ class _sStoreViewState extends ConsumerState<SStoreView> {
                       const CircleAvatar(
                         backgroundImage:
                             AssetImage("assets/images/QCUlogo.jpg"),
+                        backgroundColor: Colors.transparent,
+
                       ),
                       const SizedBox(
                         width: 20,

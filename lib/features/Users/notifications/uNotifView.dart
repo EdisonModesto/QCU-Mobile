@@ -36,6 +36,8 @@ class _NotifViewState extends ConsumerState<NotifView> {
                       children: [
                         const CircleAvatar(
                           backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
+                          backgroundColor: Colors.transparent,
+
                         ),
                         const SizedBox(width: 20,),
                         Text(

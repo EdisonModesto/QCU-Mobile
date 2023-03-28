@@ -66,6 +66,8 @@ class _ConvoListViewState extends ConsumerState<ConvoListView> {
                           },
                           leading: const CircleAvatar(
                             backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
+                            backgroundColor: Colors.transparent,
+
                           ),
                           title: Text(
                             filteredData[index].id,

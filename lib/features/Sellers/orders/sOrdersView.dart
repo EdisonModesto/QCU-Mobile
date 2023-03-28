@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:qcu/services/AuthService.dart';
 
 import '../../../common/orders/OrderDetailsView.dart';
 import '../../../cosntants/colors.dart';
@@ -107,9 +108,9 @@ class _SOrdersViewState extends ConsumerState<SOrdersView> {
                 Expanded(
                   child: orders.when(
                     data: (data1){
-                      var toPay = data1.docs.where((element) => element.data()["Status"] == "0").toList();
-                      var preparing = data1.docs.where((element) => element.data()["Status"] == "1").toList();
-                      var forPickup = data1.docs.where((element) => element.data()["Status"] == "2").toList();
+                      var toPay = data1.docs.where((element) => element.data()["Status"] == "0" && element.data()["Seller"] == AuthService().getID()).toList();
+                      var preparing = data1.docs.where((element) => element.data()["Status"] == "1" && element.data()["Seller"] == AuthService().getID()).toList();
+                      var forPickup = data1.docs.where((element) => element.data()["Status"] == "2" && element.data()["Seller"] == AuthService().getID()).toList();
 
                       return TabBarView(
                         children: [

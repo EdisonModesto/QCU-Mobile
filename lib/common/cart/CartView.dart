@@ -42,6 +42,9 @@ class _CartViewState extends ConsumerState<CartView> {
   // TODO: Add _bannerAd
   BannerAd? _bannerAd;
 
+
+  bool isSame = true;
+
   @override
   void initState() {
     BannerAd(
@@ -268,15 +271,22 @@ class _CartViewState extends ConsumerState<CartView> {
                           Expanded(
                             child: InkWell(
                               onTap: () {
-
-                                if (data.data()!["Cart"].isNotEmpty && data.data()!["Name"].toString() != "") {
+                                var sellerId = data.data()!['Cart'][0].toString().split(",")[2];
+                                for (int i = 0; i < data.data()!['Cart'].length; i++) {
+                                  if(data.data()!['Cart'][i].toString().split(",")[2] != sellerId ){
+                                    isSame = false;
+                                    Fluttertoast.showToast(msg: "You can only checkout items from one seller");
+                                    return;
+                                  }
+                                }
+                                if (data.data()!["Cart"].isNotEmpty && data.data()!["Name"].toString() != "" && data.data()!["Address"].toString() != "" && data.data()!["Contact"].toString() != "" && isSame)  {
                                   showDialog(context: context, builder: (builder){
                                     return DeliveryDialog(
                                       name: data.data()!["Name"],
                                       cart: data.data()!["Cart"],
                                       address: data.data()!["Address"],
                                       contact: data.data()!["Contact"],
-                                      sellerID: "",
+                                      sellerID: data.data()!['Cart'][0].toString().split(",")[2]
                                     );
                                   });
                                 } else {

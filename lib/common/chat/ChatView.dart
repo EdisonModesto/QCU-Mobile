@@ -120,6 +120,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
             Row(
               children: [
                 const CircleAvatar(
+                  backgroundColor: Colors.transparent,
                   backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
                 ),
                 const SizedBox(width: 20,),

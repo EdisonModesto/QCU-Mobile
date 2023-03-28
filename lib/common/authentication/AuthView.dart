@@ -41,6 +41,7 @@ class _AuthDialogState extends ConsumerState<AuthView> {
                     const SizedBox(height: 75,),
                     const CircleAvatar(
                       backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
+                      backgroundColor: Colors.transparent,
                       radius: 50,
                     ),
                     const SizedBox(height: 50,),

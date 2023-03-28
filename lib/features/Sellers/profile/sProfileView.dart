@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qcu/features/ViewModels/UserViewModel.dart';
 
@@ -51,6 +53,15 @@ class _SProfileViewState extends ConsumerState<SProfileView> {
                     ],
                   ),
                   IconButton(
+                    onPressed: () {
+                      context.pop("/seller");
+                    },
+                    icon: Icon(
+                      CupertinoIcons.money_dollar_circle,
+                      color: AppColors().primary,
+                    ),
+                  ),
+                  IconButton(
                     onPressed: () {},
                     icon: Icon(
                       Icons.edit,
@@ -96,7 +107,7 @@ class _SProfileViewState extends ConsumerState<SProfileView> {
                                 half: const Icon(Icons.star_half, color: Colors.amber),
                                 empty: const Icon(Icons.star_border, color: Colors.amber),
                               ),
-                              itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
+                              itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
                               onRatingUpdate: (rating) {
                                 print(rating);
                               },
@@ -151,10 +162,10 @@ class _SProfileViewState extends ConsumerState<SProfileView> {
                           children: [
                             Row(
                               children: [
-                                CircleAvatar(
+                                const CircleAvatar(
                                   backgroundColor: Colors.transparent,
                                   radius: 15,
-                                  backgroundImage: const AssetImage("assets/images/QCUlogo.jpg"),
+                                  backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
 
                                 ),
                                 Text(

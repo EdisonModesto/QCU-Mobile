@@ -34,6 +34,12 @@ class FirestoreService{
     });
   }
 
+  void convertToBuyer(id){
+    FirebaseFirestore.instance.collection("Users").doc(id).update({
+      "Type": "Buyer",
+    });
+  }
+
   Future<void> addFeature(id) async {
     final DocumentReference docRef = FirebaseFirestore.instance.collection("Featured").doc(id);
     final DocumentSnapshot docSnap = await docRef.get();

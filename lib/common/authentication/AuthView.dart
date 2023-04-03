@@ -19,6 +19,8 @@ class _AuthDialogState extends ConsumerState<AuthView> {
   var key = GlobalKey<FormState>();
   var key2 = GlobalKey<FormState>();
 
+  var isObscured = true;
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -111,11 +113,23 @@ class _AuthDialogState extends ConsumerState<AuthView> {
                                     height: 50,
                                     child: TextFormField(
                                       controller: passwordController,
+                                      obscureText: isObscured,
                                       decoration: InputDecoration(
                                         labelText: "Password",
                                         labelStyle: GoogleFonts.poppins(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
+                                        ),
+                                        suffix: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              isObscured = !isObscured;
+                                            });
+                                          },
+                                          icon: Icon(
+                                            !isObscured ? Icons.visibility : Icons.visibility_off,
+                                            color: Colors.grey,
+                                          ),
                                         ),
                                         border: OutlineInputBorder(
                                           borderSide: const BorderSide(
@@ -195,11 +209,23 @@ class _AuthDialogState extends ConsumerState<AuthView> {
                                     height: 50,
                                     child: TextFormField(
                                       controller: passwordController,
+                                      obscureText: isObscured,
                                       decoration: InputDecoration(
                                         labelText: "Password",
                                         labelStyle: GoogleFonts.poppins(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
+                                        ),
+                                        suffix: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              isObscured = !isObscured;
+                                            });
+                                          },
+                                          icon: Icon(
+                                            !isObscured ? Icons.visibility : Icons.visibility_off,
+                                            color: Colors.grey,
+                                          ),
                                         ),
                                         border: OutlineInputBorder(
                                           borderSide: const BorderSide(

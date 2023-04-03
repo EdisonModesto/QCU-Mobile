@@ -31,6 +31,7 @@ class _ConvoListViewState extends ConsumerState<ConvoListView> {
                 children: [
                   const CircleAvatar(
                     backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
+                    backgroundColor: Colors.transparent,
                   ),
                   const SizedBox(width: 20,),
                   Text(

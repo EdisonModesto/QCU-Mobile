@@ -17,6 +17,7 @@ import 'Users/mall/uMallView.dart';
 import 'Users/notifications/uNotifView.dart';
 import 'Users/profile/uProfileView.dart';
 import 'ViewModels/AuthViewModel.dart';
+import 'ViewModels/UserViewModel.dart';
 
 class AppNavBar extends ConsumerStatefulWidget {
   const AppNavBar({
@@ -27,7 +28,7 @@ class AppNavBar extends ConsumerStatefulWidget {
   ConsumerState createState() => _AppNavBarState();
 }
 
-class _AppNavBarState extends ConsumerState<AppNavBar> with WidgetsBindingObserver{
+class _AppNavBarState extends ConsumerState<AppNavBar>{
   PersistentTabController _controller = PersistentTabController(initialIndex: 0);
   final _noScreenshot = NoScreenshot.instance;
 
@@ -155,7 +156,6 @@ class _AppNavBarState extends ConsumerState<AppNavBar> with WidgetsBindingObserv
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addObserver(this);
     disableScreenshot();
     super.initState();
   }
@@ -163,6 +163,8 @@ class _AppNavBarState extends ConsumerState<AppNavBar> with WidgetsBindingObserv
   @override
   Widget build(BuildContext context) {
     var authState = ref.watch(authStateProvider);
+    ref.watch(userProvider);
+
     return authState.when(
       data: (data){
         if(data != null){

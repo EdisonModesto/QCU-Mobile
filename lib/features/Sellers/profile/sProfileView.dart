@@ -11,6 +11,7 @@ import '../../../common/authentication/AuthView.dart';
 import '../../../common/settings/settingsSheet.dart';
 import '../../../cosntants/colors.dart';
 import '../../../services/AuthService.dart';
+import '../../../services/FirestoreService.dart';
 import '../../Users/profile/uEditProfileDialog.dart';
 import '../../ViewModels/AuthViewModel.dart';
 
@@ -60,7 +61,7 @@ class _SProfileViewState extends ConsumerState<SProfileView> {
                       const Spacer(),
                       IconButton(
                         onPressed: () {
-                          context.pop("/seller");
+                          FirestoreService().convertToBuyer(AuthService().getID());
                         },
                         icon: Icon(
                           CupertinoIcons.money_dollar_circle,

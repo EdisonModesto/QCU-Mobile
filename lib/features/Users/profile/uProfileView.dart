@@ -88,7 +88,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
       data: (data){
         var user = ref.watch(userProvider);
         return DefaultTabController(
-          length: 3,
+          length: 4,
           child: Container(
               height: MediaQuery.of(context).size.height * 0.8,
               padding: const EdgeInsets.only(left: 40, right: 40, top: 40),
@@ -119,6 +119,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                             IconButton(
                               onPressed: () {
                                 FirestoreService().convertToSeller(AuthService().getID());
+                                setState(() {});
                               },
                               icon: Icon(
                                 Icons.store_mall_directory_outlined,
@@ -333,6 +334,15 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                             ),
                           ),
                         ),
+                        Tab(
+                          child: Text(
+                            "Completed",
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     Expanded(
@@ -352,6 +362,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                           var toPay = data1.docs.where((element) => element.data()["Status"] == "0" && element.data()["User"] == userID).toList();
                           var preparing = data1.docs.where((element) => element.data()["Status"] == "1" && element.data()["User"] == userID).toList();
                           var forPickup = data1.docs.where((element) => element.data()["Status"] == "2" && element.data()["User"] == userID).toList();
+                          var completed = data1.docs.where((element) => element.data()["Status"] == "3" && element.data()["User"] == userID).toList();
+
                           return TabBarView(
                             children: [
                               ListView.separated(
@@ -558,104 +570,204 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                   return FutureBuilder(
                                     future: getResource(forPickup[index].data()["Items"][0].toString().split(",")[0]),
                                     builder: (context, snapshot){
-                                      return InkWell(
-                                        onTap: (){
-                                          showMaterialModalBottomSheet(
-                                              context: context,
-                                              shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.vertical(
-                                                  top: Radius.circular(20),
-                                                ),
-                                              ),
-                                              builder: (context){
-                                                return OrderDetailsView(
-                                                  orderData: forPickup[index],
-                                                );
-                                              }
-                                          );
-                                        },
-                                        child: Container(
-                                          height: 100,
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey[200],
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                width: 100,
-                                                height: 100,
-                                                decoration: BoxDecoration(
-                                                  color: AppColors().primary,
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  image: DecorationImage(
-                                                    image: NetworkImage(snapshot.data!["Image"]),
-                                                    fit: BoxFit.cover,
-
+                                      if(snapshot.hasData){
+                                        return InkWell(
+                                          onTap: (){
+                                            showMaterialModalBottomSheet(
+                                                context: context,
+                                                shape: const RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.vertical(
+                                                    top: Radius.circular(20),
                                                   ),
                                                 ),
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Expanded(
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      snapshot.data!["Name"],
-                                                      style: GoogleFonts.poppins(
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.w400,
-                                                      ),
+                                                builder: (context){
+                                                  return OrderDetailsView(
+                                                    orderData: forPickup[index],
+                                                  );
+                                                }
+                                            );
+                                          },
+                                          child: Container(
+                                            height: 100,
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[200],
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 100,
+                                                  height: 100,
+                                                  decoration: BoxDecoration(
+                                                    color: AppColors().primary,
+                                                    borderRadius: BorderRadius.circular(10),
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(snapshot.data!["Image"]),
+                                                      fit: BoxFit.cover,
+
                                                     ),
-                                                    const SizedBox(height: 5),
-                                                    Text(
-                                                      "Total Items: ${forPickup[index].data()["Items"].length}",
-                                                      style: GoogleFonts.poppins(
-                                                        fontSize: 12,
-                                                        fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        snapshot.data!["Name"],
+                                                        style: GoogleFonts.poppins(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.w400,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    const SizedBox(height: 5),
-                                                    FutureBuilder(
-                                                        future: calculateTotal(forPickup[index].data()["Items"]),
-                                                        builder: (context, result) {
-                                                          if(result.hasData){
-                                                            return Text(
-                                                              "Total Price: ${result.data}",
-                                                              style: GoogleFonts.poppins(
-                                                                fontSize: 12,
-                                                                fontWeight: FontWeight.w400,
-                                                              ),
-                                                            );
+                                                      const SizedBox(height: 5),
+                                                      Text(
+                                                        "Total Items: ${forPickup[index].data()["Items"].length}",
+                                                        style: GoogleFonts.poppins(
+                                                          fontSize: 12,
+                                                          fontWeight: FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 5),
+                                                      FutureBuilder(
+                                                          future: calculateTotal(forPickup[index].data()["Items"]),
+                                                          builder: (context, result) {
+                                                            if(result.hasData){
+                                                              return Text(
+                                                                "Total Price: ${result.data}",
+                                                                style: GoogleFonts.poppins(
+                                                                  fontSize: 12,
+                                                                  fontWeight: FontWeight.w400,
+                                                                ),
+                                                              );
+                                                            }
+                                                            return const SizedBox();
                                                           }
-                                                          return const SizedBox();
-                                                        }
-                                                    ),
-                                                  ],
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                              const SizedBox(width: 10),
-                                              IconButton(
-                                                onPressed:(){
+                                                const SizedBox(width: 10),
+                                                IconButton(
+                                                  onPressed:(){
                                                     FirestoreService().updateOrderStatus(forPickup[index].id, "3");
-                                                },
-                                                icon: const Icon(
-                                                  CupertinoIcons.cube_box,
-                                                  color: Colors.black,
-                                                  size: 30,
-                                                ),
-                                              )
-                                            ],
+                                                  },
+                                                  icon: const Icon(
+                                                    CupertinoIcons.cube_box,
+                                                    color: Colors.black,
+                                                    size: 30,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      );
+                                        );
+                                      }
+                                      return SizedBox();
                                     },
                                   );
                                 },
                                 separatorBuilder: (context, index) => const SizedBox(height: 10),
                               ),
+                              ListView.separated(
+                                itemCount: completed.length,
+                                itemBuilder: (context, index){
+                                  return FutureBuilder(
+                                    future: getResource(completed[index].data()["Items"][0].toString().split(",")[0]),
+                                    builder: (context, snapshot){
+                                      if(snapshot.hasData){
+                                        return InkWell(
+                                          onTap: (){
+                                            showMaterialModalBottomSheet(
+                                                context: context,
+                                                shape: const RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.vertical(
+                                                    top: Radius.circular(20),
+                                                  ),
+                                                ),
+                                                builder: (context){
+                                                  return OrderDetailsView(
+                                                    orderData: completed[index],
+                                                  );
+                                                }
+                                            );
+                                          },
+                                          child: Container(
+                                            height: 100,
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[200],
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 100,
+                                                  height: 100,
+                                                  decoration: BoxDecoration(
+                                                    color: AppColors().primary,
+                                                    borderRadius: BorderRadius.circular(10),
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(snapshot.data!["Image"]),
+                                                      fit: BoxFit.cover,
+
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        snapshot.data!["Name"],
+                                                        style: GoogleFonts.poppins(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 5),
+                                                      Text(
+                                                        "Total Items: ${completed[index].data()["Items"].length}",
+                                                        style: GoogleFonts.poppins(
+                                                          fontSize: 12,
+                                                          fontWeight: FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 5),
+                                                      FutureBuilder(
+                                                          future: calculateTotal(completed[index].data()["Items"]),
+                                                          builder: (context, result) {
+                                                            if(result.hasData){
+                                                              return Text(
+                                                                "Total Price: ${result.data}",
+                                                                style: GoogleFonts.poppins(
+                                                                  fontSize: 12,
+                                                                  fontWeight: FontWeight.w400,
+                                                                ),
+                                                              );
+                                                            }
+                                                            return const SizedBox();
+                                                          }
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      return SizedBox();
+                                    },
+                                  );
+                                },
+                                separatorBuilder: (context, index) => const SizedBox(height: 10),
+                              ),
+
                             ],
                           );
                         },

@@ -84,7 +84,7 @@ class _MallViewState extends ConsumerState<MallView> {
                     ),
                     const SizedBox(width: 20,),
                     Text(
-                      "QCU Mall",
+                      "Mall",
                       style: GoogleFonts.poppins(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

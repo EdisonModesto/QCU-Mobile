@@ -1,3 +1,4 @@
+import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:go_router/go_router.dart";
@@ -50,43 +51,51 @@ class _ConvoListViewState extends ConsumerState<ConvoListView> {
                       return element.id.split("-")[0] == AuthService().getID() || element.id.split("-")[1] == AuthService().getID();
                     }).toList();
 
-
+                    var ref = FirebaseFirestore.instance.collection("Users");
 
                     return ListView.builder(
                       padding: const EdgeInsets.all(0),
                       shrinkWrap: true,
                       itemCount: filteredData.length,
                       itemBuilder: (context, index) {
-                        return ListTile(
-                          onTap: (){
-                            context.pushNamed("chat", params: {
-                              "buyer": filteredData[index].id.split("-")[0],
-                              "seller": filteredData[index].id.split("-")[1],
-                            });
-                          },
-                          leading: const CircleAvatar(
-                            backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
-                            backgroundColor: Colors.transparent,
+                        return StreamBuilder(
+                          stream: ref.doc(filteredData[index].id.split("-")[0] == AuthService().getID() ? filteredData[index].id.split("-")[1] : filteredData[index].id.split("-")[0] ).snapshots(),
+                          builder: (context, snapshot) {
+                            if(snapshot.hasData){
+                              return ListTile(
+                                onTap: (){
+                                  context.pushNamed("chat", params: {
+                                    "buyer": filteredData[index].id.split("-")[0],
+                                    "seller": filteredData[index].id.split("-")[1],
+                                  });
+                                },
+                                leading: const CircleAvatar(
+                                  backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
+                                  backgroundColor: Colors.transparent,
 
-                          ),
-                          title: Text(
-                            filteredData[index].id,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                            ),
-                          ),
-                          trailing: Text(
-                            ">",
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                          ),
+                                ),
+                                title: Text(
+                                  snapshot.data!["Name"],
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                trailing: Text(
+                                  ">",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              );
+                            }
+                            return const SizedBox();
+                          }
                         );
                       },
                     );

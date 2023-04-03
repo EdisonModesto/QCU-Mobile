@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qcu/common/orders/CancelDialog.dart';
+import 'package:qcu/common/settings/settingsSheet.dart';
 import 'package:qcu/features/Users/profile/uEditProfileDialog.dart';
 import 'package:qcu/services/AuthService.dart';
 import 'package:qcu/services/FirestoreService.dart';
@@ -206,10 +207,21 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                             const Spacer(),
                             IconButton(
                               onPressed: () {
-                                AuthService().signOut();
+                                showMaterialModalBottomSheet(
+                                  context: context,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                    ),
+                                  ),
+                                  builder: (builder){
+                                  return SettingsSheet();
+                                },);
+                                //AuthService().signOut();
                               },
                               icon: Icon(
-                                Icons.logout,
+                                Icons.settings,
                                 color: AppColors().primary,
                               ),
                             ),
@@ -451,87 +463,90 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                   return FutureBuilder(
                                     future: getResource(preparing[index].data()["Items"][0].toString().split(",")[0]),
                                     builder: (context, snapshot){
-                                      return InkWell(
-                                        onTap: (){
-                                          showMaterialModalBottomSheet(
-                                              context: context,
-                                              shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.vertical(
-                                                  top: Radius.circular(20),
-                                                ),
-                                              ),
-                                              builder: (context){
-                                                return OrderDetailsView(
-                                                  orderData: preparing[index],
-                                                );
-                                              }
-                                          );
-                                        },
-                                        child: Container(
-                                          height: 100,
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey[200],
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                width: 100,
-                                                height: 100,
-                                                decoration: BoxDecoration(
-                                                  color: AppColors().primary,
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  image: DecorationImage(
-                                                    image: NetworkImage(snapshot.data!["Image"]),
-                                                    fit: BoxFit.cover,
+                                      if(snapshot.hasData){
+                                        return InkWell(
+                                          onTap: (){
+                                            showMaterialModalBottomSheet(
+                                                context: context,
+                                                shape: const RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.vertical(
+                                                    top: Radius.circular(20),
                                                   ),
                                                 ),
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Expanded(
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      snapshot.data!["Name"],
-                                                      style: GoogleFonts.poppins(
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.w400,
-                                                      ),
+                                                builder: (context){
+                                                  return OrderDetailsView(
+                                                    orderData: preparing[index],
+                                                  );
+                                                }
+                                            );
+                                          },
+                                          child: Container(
+                                            height: 100,
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[200],
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 100,
+                                                  height: 100,
+                                                  decoration: BoxDecoration(
+                                                    color: AppColors().primary,
+                                                    borderRadius: BorderRadius.circular(10),
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(snapshot.data!["Image"]),
+                                                      fit: BoxFit.cover,
                                                     ),
-                                                    const SizedBox(height: 5),
-                                                    Text(
-                                                      "Total Items: ${preparing[index].data()["Items"].length}",
-                                                      style: GoogleFonts.poppins(
-                                                        fontSize: 12,
-                                                        fontWeight: FontWeight.w400,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(height: 5),
-                                                    FutureBuilder(
-                                                        future: calculateTotal(preparing[index].data()["Items"]),
-                                                        builder: (context, result) {
-                                                          if(result.hasData){
-                                                            return Text(
-                                                              "Total Price: ${result.data}",
-                                                              style: GoogleFonts.poppins(
-                                                                fontSize: 12,
-                                                                fontWeight: FontWeight.w400,
-                                                              ),
-                                                            );
-                                                          }
-                                                          return const SizedBox();
-                                                        }
-                                                    ),
-                                                  ],
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                                const SizedBox(width: 10),
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        snapshot.data!["Name"],
+                                                        style: GoogleFonts.poppins(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 5),
+                                                      Text(
+                                                        "Total Items: ${preparing[index].data()["Items"].length}",
+                                                        style: GoogleFonts.poppins(
+                                                          fontSize: 12,
+                                                          fontWeight: FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 5),
+                                                      FutureBuilder(
+                                                          future: calculateTotal(preparing[index].data()["Items"]),
+                                                          builder: (context, result) {
+                                                            if(result.hasData){
+                                                              return Text(
+                                                                "Total Price: ${result.data}",
+                                                                style: GoogleFonts.poppins(
+                                                                  fontSize: 12,
+                                                                  fontWeight: FontWeight.w400,
+                                                                ),
+                                                              );
+                                                            }
+                                                            return const SizedBox();
+                                                          }
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      );
+                                        );
+                                      }
+                                      return const SizedBox();
                                     },
                                   );
                                 },
@@ -624,7 +639,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                               const SizedBox(width: 10),
                                               IconButton(
                                                 onPressed:(){
-                                                  //  FirestoreService().updateOrderStatus(toRecieve[index].id, "3");
+                                                    FirestoreService().updateOrderStatus(forPickup[index].id, "3");
                                                 },
                                                 icon: const Icon(
                                                   CupertinoIcons.cube_box,

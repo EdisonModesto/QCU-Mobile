@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:no_screenshot/no_screenshot.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:qcu/cosntants/colors.dart';
 import 'package:qcu/features/Admins/dashboard/aDashboardView.dart';
@@ -26,8 +27,11 @@ class AppNavBar extends ConsumerStatefulWidget {
   ConsumerState createState() => _AppNavBarState();
 }
 
-class _AppNavBarState extends ConsumerState<AppNavBar> {
+class _AppNavBarState extends ConsumerState<AppNavBar> with WidgetsBindingObserver{
   PersistentTabController _controller = PersistentTabController(initialIndex: 0);
+  final _noScreenshot = NoScreenshot.instance;
+
+
 
   List<Widget> _userScreens() {
     return [
@@ -67,7 +71,7 @@ class _AppNavBarState extends ConsumerState<AppNavBar> {
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.bag),
-        title: ("QCU Mall"),
+        title: ("Mall"),
         activeColorPrimary: AppColors().primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
@@ -145,6 +149,16 @@ class _AppNavBarState extends ConsumerState<AppNavBar> {
   }
 
 
+  Future<void> disableScreenshot() async {
+    await _noScreenshot.screenshotOff();
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance?.addObserver(this);
+    disableScreenshot();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

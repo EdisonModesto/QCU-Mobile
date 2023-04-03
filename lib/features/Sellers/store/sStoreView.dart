@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qcu/common/itemDetails/ItemView.dart';
@@ -74,18 +75,31 @@ class _sStoreViewState extends ConsumerState<SStoreView> {
                       ),
                     ],
                   ),
-                  IconButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (builder) {
-                            return AddItemDialog();
-                          });
-                    },
-                    icon: Icon(
-                      CupertinoIcons.add,
-                      color: AppColors().primary,
-                    ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (builder) {
+                                return const AddItemDialog();
+                              });
+                        },
+                        icon: Icon(
+                          CupertinoIcons.add,
+                          color: AppColors().primary,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          context.push("/convoList");
+                        },
+                        icon: Icon(
+                          CupertinoIcons.chat_bubble_text,
+                          color: AppColors().secondary,
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),
@@ -171,7 +185,7 @@ class _sStoreViewState extends ConsumerState<SStoreView> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
+                                borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(8),
                                   topRight: Radius.circular(8),
                                 ),
@@ -220,35 +234,49 @@ class _sStoreViewState extends ConsumerState<SStoreView> {
                             ),
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              icon: Icon(
-                                CupertinoIcons.pencil,
-                                color: AppColors().primary,
+                        Transform.translate(
+                          offset: const Offset(0, 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              CircleAvatar(
+                                radius: 19,
+                                backgroundColor: Colors.white,
+                                child: IconButton(
+                                  icon: Icon(
+                                    CupertinoIcons.pencil,
+                                    color: AppColors().primary,
+                                  ),
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (builder) {
+                                          return EditItemDialog(
+                                            data: filteredData[index],
+                                          );
+                                        });
+                                  },
+                                ),
                               ),
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (builder) {
-                                      return EditItemDialog(
-                                        data: filteredData[index],
-                                      );
-                                    });
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                CupertinoIcons.delete,
-                                color: AppColors().primary,
+                              SizedBox(width: 5,),
+                              CircleAvatar(
+                                radius: 19,
+                                backgroundColor: Colors.white,
+                                child: IconButton(
+                                  icon: Icon(
+                                    CupertinoIcons.delete,
+                                    color: AppColors().primary,
+                                  ),
+                                  onPressed: () {
+                                    FirestoreService()
+                                        .deleteItem(filteredData[index].id);
+                                  },
+                                ),
                               ),
-                              onPressed: () {
-                                FirestoreService()
-                                    .deleteItem(filteredData[index].id);
-                              },
-                            ),
-                          ],
+                              SizedBox(width: 5,)
+
+                            ],
+                          ),
                         ),
                       ],
                     );
@@ -290,7 +318,7 @@ class _sStoreViewState extends ConsumerState<SStoreView> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
+                                borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(8),
                                   topRight: Radius.circular(8),
                                 ),
@@ -391,7 +419,7 @@ class _sStoreViewState extends ConsumerState<SStoreView> {
         );
       },
       loading: () {
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       },

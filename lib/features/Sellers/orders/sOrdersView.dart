@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qcu/services/AuthService.dart';
@@ -53,6 +54,7 @@ class _SOrdersViewState extends ConsumerState<SOrdersView> {
                 Row(
                   children: [
                     const CircleAvatar(
+                      backgroundColor: Colors.transparent,
                       backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
                     ),
                     const SizedBox(width: 20,),
@@ -62,6 +64,16 @@ class _SOrdersViewState extends ConsumerState<SOrdersView> {
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
+                      ),
+                    ),
+                    Spacer(),
+                    IconButton(
+                      onPressed: () async {
+                        context.push("/convoList");
+                      },
+                      icon: Icon(
+                        CupertinoIcons.chat_bubble_text,
+                        color: AppColors().secondary,
                       ),
                     ),
                   ],

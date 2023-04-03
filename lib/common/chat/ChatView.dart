@@ -53,6 +53,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
   ];
 
 
+
   void _handleSubmitted(String text, String name) {
     _textController.clear();
     ChatService().sendMessage(
@@ -111,7 +112,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
   Widget build(BuildContext context) {
 
     var user = ref.watch(userProvider);
-
+    var refe = FirebaseFirestore.instance.collection("Users");
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.only(left: 40, right: 40, top: 40),
@@ -124,12 +125,22 @@ class _ChatViewState extends ConsumerState<ChatView> {
                   backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
                 ),
                 const SizedBox(width: 20,),
-                Text(
-                  "Jack Shop",
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                StreamBuilder(
+                  stream: refe.doc(widget.buyer == AuthService().getID() ? widget.seller : widget.buyer).snapshots(),
+                  builder: (context, snapshot) {
+                    if(snapshot.hasData){
+                      return Text(
+                        snapshot.data!["Name"],
+                        style: GoogleFonts.roboto(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
                 ),
               ],
             ),
@@ -201,21 +212,26 @@ class _ChatViewState extends ConsumerState<ChatView> {
             margin: const EdgeInsets.only(right: 16.0),
             child: CircleAvatar(
               child: Text(
-                message.name[0]
+                message.name[0],
               ),
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                message.name
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 5.0),
-                child: Text(message.message),
-              ),
-            ],
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  message.name
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 5.0),
+                  child: Text(
+                    message.message,
+                    softWrap: true,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ) : Row(
@@ -230,7 +246,9 @@ class _ChatViewState extends ConsumerState<ChatView> {
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 5.0),
-                  child: Text(message.message),
+                  child: Text(message.message,
+                    textAlign: TextAlign.end,
+                  ),
                 ),
               ],
             ),
@@ -239,7 +257,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
             margin: const EdgeInsets.only(left: 16.0),
             child: CircleAvatar(
               child: Text(
-                  message.name[0]
+                  message.name[0],
               ),
             ),
           ),

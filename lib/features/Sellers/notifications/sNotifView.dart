@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../cosntants/colors.dart';
@@ -40,6 +41,16 @@ class _SNotifViewState extends ConsumerState<SNotifView> {
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
+                      ),
+                    ),
+                    Spacer(),
+                    IconButton(
+                      onPressed: () async {
+                        context.push("/convoList");
+                      },
+                      icon: Icon(
+                        CupertinoIcons.chat_bubble_text,
+                        color: AppColors().secondary,
                       ),
                     ),
                   ],

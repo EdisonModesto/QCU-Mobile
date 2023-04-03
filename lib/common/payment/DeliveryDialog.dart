@@ -89,7 +89,7 @@ class DeliveryDialog extends ConsumerWidget {
                                   ChatService().sendMessage(
                                       Message(
                                           id: AuthService().getID(),
-                                          name: "Edison",
+                                          name: name,
                                           message: "Hi! I would like to discuss my order for pickup. Thank you!",
                                           time: DateTime.now()),
                                       AuthService().getID(),

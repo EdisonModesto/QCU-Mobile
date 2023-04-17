@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -76,8 +77,15 @@ class _ADashboardViewState extends ConsumerState<ADashboardView> {
                               color: Colors.black,
                             ),
                           ),
+
                         ],
                       ),
+                      IconButton(
+                        icon: Icon(Icons.logout),
+                        onPressed: () {
+                          FirebaseAuth.instance.signOut();
+                        },
+                      )
                     ],
                   ),
                   const SizedBox(height: 25,),
@@ -271,112 +279,160 @@ class _ADashboardViewState extends ConsumerState<ADashboardView> {
                                   child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "User: ",
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 5,),
-                                            Text(
-                                              "Seller: ",
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 5,),
-                                            Text(
-                                              "No. of Products: ",
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 5,),
-                                            Text(
-                                              "Total: ",
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Column(
-                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              FutureBuilder(
-                                                  future: getName(data.docs[index].data()['User']),
-                                                  builder: (context, snapshot1) {
-                                                    if (snapshot1.hasData) {
-                                                      return Text(
-                                                        snapshot1.data.toString(),
-                                                        style: GoogleFonts.poppins(
-                                                          fontSize: 14,
-                                                          fontWeight: FontWeight.w500,
-                                                          color: AppColors().primary,
-                                                        ),
-                                                      );
-                                                    }
-                                                    return Text(
-                                                      "Loading",
-                                                      style: GoogleFonts.poppins(
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: AppColors().primary,
-                                                      ),
-                                                    );
-                                                  }
-                                              ),
-                                              const SizedBox(height: 5,),
-                                              FutureBuilder(
-                                                  future: getName(data.docs[index].data()['Seller']),
-                                                  builder: (context, snapshot1) {
-                                                    if (snapshot1.hasData) {
-                                                      return Text(
-                                                        snapshot1.data.toString(),
-                                                        style: GoogleFonts.poppins(
-                                                          fontSize: 14,
-                                                          fontWeight: FontWeight.w500,
-                                                          color: AppColors().primary,
-                                                        ),
-                                                      );
-                                                    }
-                                                    return Text(
-                                                      "Loading",
-                                                      style: GoogleFonts.poppins(
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: AppColors().primary,
-                                                      ),
-                                                    );
-                                                  }
-                                              ),
-                                              const SizedBox(height: 5,),
                                               Text(
-                                                data.docs[index].data()['Items'].length.toString(),
+                                                "User: ",
                                                 style: GoogleFonts.poppins(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w500,
-                                                  color: AppColors().primary,
+                                                  color: Colors.black,
                                                 ),
                                               ),
                                               const SizedBox(height: 5,),
-                                              FutureBuilder(
-                                                future: calculateTotal(data.docs[index].data()['Items']),
-                                                builder: (context, snapshot1) {
-                                                  if (snapshot1.hasData) {
+                                              Text(
+                                                "Seller: ",
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 5,),
+                                              Text(
+                                                "No. of Products: ",
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 5,),
+                                              Text(
+                                                "Date & time purchase: ",
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 5,),
+                                              Text(
+                                                "Date & time delivery: ",
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 5,),
+                                              Text(
+                                                "Total: ",
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              children: [
+                                                FutureBuilder(
+                                                    future: getName(data.docs[index].data()['User']),
+                                                    builder: (context, snapshot1) {
+                                                      if (snapshot1.hasData) {
+                                                        return Text(
+                                                          snapshot1.data.toString(),
+                                                          style: GoogleFonts.poppins(
+                                                            fontSize: 14,
+                                                            fontWeight: FontWeight.w500,
+                                                            color: AppColors().primary,
+                                                          ),
+                                                        );
+                                                      }
+                                                      return Text(
+                                                        "Loading",
+                                                        style: GoogleFonts.poppins(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.w500,
+                                                          color: AppColors().primary,
+                                                        ),
+                                                      );
+                                                    }
+                                                ),
+                                                const SizedBox(height: 5,),
+                                                FutureBuilder(
+                                                    future: getName(data.docs[index].data()['Seller']),
+                                                    builder: (context, snapshot1) {
+                                                      if (snapshot1.hasData) {
+                                                        return Text(
+                                                          snapshot1.data.toString(),
+                                                          style: GoogleFonts.poppins(
+                                                            fontSize: 14,
+                                                            fontWeight: FontWeight.w500,
+                                                            color: AppColors().primary,
+                                                          ),
+                                                        );
+                                                      }
+                                                      return Text(
+                                                        "Loading",
+                                                        style: GoogleFonts.poppins(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.w500,
+                                                          color: AppColors().primary,
+                                                        ),
+                                                      );
+                                                    }
+                                                ),
+                                                const SizedBox(height: 5,),
+                                                Text(
+                                                  data.docs[index].data()['Items'].length.toString(),
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: AppColors().primary,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 5,),
+                                                Text(
+                                                  data.docs[index].data()['DatePurchase'].toString(),
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: AppColors().primary,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 5,),
+                                                Text(
+                                                  data.docs[index].data()['DateDelivered'].toString(),
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: AppColors().primary,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 5,),
+                                                FutureBuilder(
+                                                  future: calculateTotal(data.docs[index].data()['Items']),
+                                                  builder: (context, snapshot1) {
+                                                    if (snapshot1.hasData) {
+                                                      return Text(
+                                                        "PHP ${snapshot1.data.toString()}",
+                                                        style: GoogleFonts.poppins(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.w500,
+                                                          color: AppColors().primary,
+                                                        ),
+                                                      );
+                                                    }
                                                     return Text(
-                                                      "PHP ${snapshot1.data.toString()}",
+                                                      "Loading",
                                                       style: GoogleFonts.poppins(
                                                         fontSize: 14,
                                                         fontWeight: FontWeight.w500,
@@ -384,17 +440,9 @@ class _ADashboardViewState extends ConsumerState<ADashboardView> {
                                                       ),
                                                     );
                                                   }
-                                                  return Text(
-                                                    "Loading",
-                                                    style: GoogleFonts.poppins(
-                                                      fontSize: 14,
-                                                      fontWeight: FontWeight.w500,
-                                                      color: AppColors().primary,
-                                                    ),
-                                                  );
-                                                }
-                                              )
-                                            ]
+                                                )
+                                              ]
+                                          ),
                                         ),
                                       ]
                                   ),

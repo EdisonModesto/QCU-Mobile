@@ -10,6 +10,7 @@ import 'package:qcu/features/Sellers/profile/sProfileView.dart';
 import 'package:qcu/features/Sellers/store/sStoreView.dart';
 import 'package:qcu/services/FirestoreService.dart';
 
+import '../services/borzo/BorzoService.dart';
 import 'Admins/accounts/aAccountsView.dart';
 import 'Sellers/notifications/sNotifView.dart';
 import 'Users/home/uHomeView.dart';
@@ -30,7 +31,6 @@ class AppNavBar extends ConsumerStatefulWidget {
 
 class _AppNavBarState extends ConsumerState<AppNavBar>{
   PersistentTabController _controller = PersistentTabController(initialIndex: 0);
-  final _noScreenshot = NoScreenshot.instance;
 
 
 
@@ -56,8 +56,8 @@ class _AppNavBarState extends ConsumerState<AppNavBar>{
     return [
       const ADashboardView(),
       const AAccountsView(),
-      const NotifView(),
-      const ProfileView()
+    /*  const NotifView(),
+      const ProfileView()*/
     ];
   }
 
@@ -134,7 +134,7 @@ class _AppNavBarState extends ConsumerState<AppNavBar>{
         activeColorPrimary: AppColors().primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
-      PersistentBottomNavBarItem(
+     /* PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.bell),
         title: ("Notification"),
         activeColorPrimary: AppColors().primary,
@@ -145,18 +145,15 @@ class _AppNavBarState extends ConsumerState<AppNavBar>{
         title: ("Profile"),
         activeColorPrimary: AppColors().primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
-      ),
+      ),*/
     ];
   }
 
 
-  Future<void> disableScreenshot() async {
-    await _noScreenshot.screenshotOff();
-  }
-
   @override
   void initState() {
-    disableScreenshot();
+   // BorzoService().makeRequest();
+    print("Borzo");
     super.initState();
   }
 

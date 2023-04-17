@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qcu/common/chat/MessageModel.dart';
+import 'package:qcu/common/payment/AddressDialog.dart';
 import 'package:qcu/common/payment/PaymentView.dart';
 import 'package:qcu/cosntants/colors.dart';
 import 'package:qcu/services/AuthService.dart';
@@ -84,6 +85,7 @@ class DeliveryDialog extends ConsumerWidget {
                                       "pickup",
                                       "cash",
                                       sellerID,
+                                      "0.0"
                                   );
                                   Fluttertoast.showToast(msg: "Order placed successfully!");
                                   ChatService().sendMessage(
@@ -115,7 +117,7 @@ class DeliveryDialog extends ConsumerWidget {
                     TextButton(
                       onPressed: () {
                         //Navigator.of(context).pop();
-                        showDialog(context: context, builder: (builder){
+                   /*     showDialog(context: context, builder: (builder){
                           return AlertDialog(
                             title: const Text("Mode of Payment"),
                             content: const Text("What mode of payment would you like to use?"),
@@ -154,6 +156,15 @@ class DeliveryDialog extends ConsumerWidget {
                                 child: const Text("GCash"),
                               ),
                             ],
+                          );
+                        });*/
+                        showDialog(context: context, builder: (addressContext){
+                          return AddressDialog(
+                            cart: cart,
+                            name: name,
+                            contact: contact,
+                            address: address,
+                            sellerID: sellerID,
                           );
                         });
                       },

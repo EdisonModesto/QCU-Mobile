@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:no_screenshot/no_screenshot.dart';
 import 'package:qcu/services/AuthService.dart';
 import 'package:qcu/services/ChatService.dart';
+import 'package:qcu/services/FilePickerService.dart';
 import 'package:qcu/services/FirestoreService.dart';
 
 import '../../features/ViewModels/UserViewModel.dart';
@@ -51,13 +53,22 @@ class _ChatViewState extends ConsumerState<ChatView> {
     "Tawag",
     "Text",
   ];
+  final _noScreenshot = NoScreenshot.instance;
 
+  Future<void> disableScreenshot() async {
+    await _noScreenshot.screenshotOff();
+  }
 
+  @override
+  void initState() {
+    disableScreenshot();
+    super.initState();
+  }
 
   void _handleSubmitted(String text, String name) {
     _textController.clear();
     ChatService().sendMessage(
-      Message(id: AuthService().getID(), name: name, message: text, time: DateTime.now()),
+      Message(id: AuthService().getID(), name: name, message: "TEKSTO~$text", time: DateTime.now()),
       widget.buyer,
       widget.seller,
     );
@@ -93,6 +104,17 @@ class _ChatViewState extends ConsumerState<ChatView> {
                 decoration:
                 const InputDecoration.collapsed(hintText: 'Send a message'),
               ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.image),
+              onPressed: (){
+                var url = FilePickerService().pickImage();
+                ChatService().sendMessage(
+                  Message(id: AuthService().getID(), name: name, message: "IMAHE~$url", time: DateTime.now()),
+                  widget.buyer,
+                  widget.seller,
+                );
+              },
             ),
             IconButton(
               icon: const Icon(Icons.send),
@@ -223,13 +245,22 @@ class _ChatViewState extends ConsumerState<ChatView> {
                 Text(
                   message.name
                 ),
+                message.message.split("~")[0] == "TEKSTO" ?
                 Container(
                   margin: const EdgeInsets.only(top: 5.0),
                   child: Text(
                     message.message,
                     softWrap: true,
                   ),
-                ),
+                ) :
+                Container(
+                  margin: const EdgeInsets.only(top: 5.0),
+                  child: Image.network(
+                    message.message.split("~")[1],
+                    width: 200,
+                    height: 200,
+                  ),
+                )
               ],
             ),
           ),

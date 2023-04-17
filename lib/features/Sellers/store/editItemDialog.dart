@@ -155,6 +155,8 @@ class _EditItemDialogState extends ConsumerState<EditItemDialog> {
                                 validator: (value){
                                   if(value!.isEmpty){
                                     return "";
+                                  } else if(value.contains("-")){
+                                    return "";
                                   }
                                   return null;
                                 },

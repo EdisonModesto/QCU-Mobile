@@ -13,6 +13,7 @@ class PaymentView extends ConsumerWidget {
     required this.contact,
     required this.address,
     required this.sellerID,
+    required this.shippingFee,
     Key? key,
   }) : super(key: key);
 
@@ -21,6 +22,7 @@ class PaymentView extends ConsumerWidget {
   final contact;
   final address;
   final sellerID;
+  final shippingFee;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -107,6 +109,7 @@ class PaymentView extends ConsumerWidget {
                             "delivery",
                             "gcash",
                             sellerID,
+                            shippingFee
                           );
                           Fluttertoast.showToast(msg: "Order placed successfully");
                           Navigator.pop(context);

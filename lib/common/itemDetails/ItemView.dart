@@ -183,7 +183,7 @@ class _ItemViewState extends ConsumerState<ItemView> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  snapshot.data!.data()!["Name"].substring(0, 6),
+                                  snapshot.data!.data()!["Name"],
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.poppins(

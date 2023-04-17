@@ -143,6 +143,8 @@ class _AddItemDialogState extends ConsumerState<AddItemDialog> {
                               validator: (value){
                                 if(value!.isEmpty){
                                   return "";
+                                } else if(value.contains("-")){
+                                  return "";
                                 }
                                 return null;
                               },

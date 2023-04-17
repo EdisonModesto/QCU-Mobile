@@ -51,7 +51,8 @@ class FirestoreService{
       });
       Fluttertoast.showToast(msg: "Seller is now featured");
     } else {
-      Fluttertoast.showToast(msg: "Seller already featured");
+      FirebaseFirestore.instance.collection("Featured").doc(id).delete();
+      Fluttertoast.showToast(msg: "Seller removed from featured");
     }
   }
 
@@ -126,7 +127,7 @@ class FirestoreService{
     }
   }
 
-  Future<void> createOrder(items, name, contact, address, delivery, mop, sellerID) async {
+  Future<void> createOrder(items, name, contact, address, delivery, mop, sellerID, shippingFee) async {
 
     FirebaseFirestore.instance.collection("Users").doc(AuthService().getID()).update({
       "Cart": [],
@@ -142,7 +143,9 @@ class FirestoreService{
       "Address": address,
       "Delivery": delivery,
       "MOP": mop,
-      //"Date": DateTime.now().toString(),
+      "DatePurchase": DateTime.now().toString(),
+      "DateDelivered": "No Data",
+      "ShippingFee": shippingFee,
     });
 
     for(var item in items){

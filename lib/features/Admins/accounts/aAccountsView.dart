@@ -142,7 +142,7 @@ class _AAccountsViewState extends ConsumerState<AAccountsView> {
                 },
               ),
               const SizedBox(height: 25,),
-              Text(
+            /*  Text(
                 "Buyers",
                 style: GoogleFonts.poppins(
                   fontSize: 18,
@@ -220,7 +220,7 @@ class _AAccountsViewState extends ConsumerState<AAccountsView> {
                     ),
                   ),
                 ),
-              ),
+              ),*/
             ]
         ),
       ),

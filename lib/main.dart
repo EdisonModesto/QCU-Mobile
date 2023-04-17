@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:qcu/cosntants/colors.dart';
 import 'package:qcu/cosntants/routes.dart';
+import 'package:qcu/services/borzo/BorzoService.dart';
 
 import 'firebase_options.dart';
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'QCU Mobile',
+      title: 'LSC Mobile',
       theme: ThemeData(
         // This is the theme of your application.
         //

@@ -167,7 +167,7 @@ class _OrderDetailsViewState extends ConsumerState<OrderDetailsView> {
               Row(
                 children: [
                   Text(
-                    "Total:",
+                    "Item Total:",
                     style: GoogleFonts.poppins(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -189,6 +189,25 @@ class _OrderDetailsViewState extends ConsumerState<OrderDetailsView> {
                           child: CircularProgressIndicator(),
                         );
                       }
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Text(
+                    "Shipping Total:",
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    "PHP${widget.orderData.data()['ShippingFee']}",
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                    ),
                   ),
                 ],
               ),

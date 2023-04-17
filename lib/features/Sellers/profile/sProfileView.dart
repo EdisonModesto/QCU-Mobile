@@ -201,6 +201,60 @@ class _SProfileViewState extends ConsumerState<SProfileView> {
                         );
                       },
                     ),
+                  ),
+                  Text(
+                    "Monthly Sales",
+                    style: GoogleFonts.poppins(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: 3,
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.all(0),
+                      itemBuilder: (context, index){
+                        return Card(
+                          child: Container(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const CircleAvatar(
+                                      backgroundColor: Colors.transparent,
+                                      radius: 15,
+                                      backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
+
+                                    ),
+                                    Text(
+                                      "Review Name",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10,),
+                                Text(
+                                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam tincidunt, nunc nisl aliquam nisl, eget aliquam nisl nunc eget nisl.",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   )
                 ]
             )

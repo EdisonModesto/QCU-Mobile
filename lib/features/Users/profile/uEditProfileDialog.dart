@@ -259,9 +259,9 @@ class _UEditProfileDialogState extends ConsumerState<UEditProfileDialog> {
                               );
                             }),
                             onChanged: (value) {
-                              /*    setState(() {
-                                goal = value.toString();
-                              });*/
+                                  setState(() {
+                                reg = value.toString();
+                              });
                             },
                           ),
                         ],

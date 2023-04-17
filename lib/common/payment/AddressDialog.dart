@@ -229,9 +229,9 @@ class _AddressDialogState extends ConsumerState<AddressDialog> {
                               );
                             }),
                             onChanged: (value) {
-                              /*    setState(() {
-                                goal = value.toString();
-                              });*/
+                                  setState(() {
+                                reg = value.toString();
+                              });
                             },
                           ),
                         ],

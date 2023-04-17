@@ -45,13 +45,13 @@ class AuthService{
     }
   }
 
-  Future<void> signUp(emailAddress, password) async {
+  Future<void> signUp(emailAddress, password, name, address) async {
     try {
       final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailAddress,
         password: password,
       );
-      FirestoreService().createUser(credential.user!.uid);
+      FirestoreService().createUser(credential.user!.uid, name, address);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         Fluttertoast.showToast(

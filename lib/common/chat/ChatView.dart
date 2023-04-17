@@ -107,8 +107,8 @@ class _ChatViewState extends ConsumerState<ChatView> {
             ),
             IconButton(
               icon: const Icon(Icons.image),
-              onPressed: (){
-                var url = FilePickerService().pickImage();
+              onPressed: () async {
+                var url = await FilePickerService().pickImage();
                 ChatService().sendMessage(
                   Message(id: AuthService().getID(), name: name, message: "IMAHE~$url", time: DateTime.now()),
                   widget.buyer,
@@ -249,7 +249,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
                 Container(
                   margin: const EdgeInsets.only(top: 5.0),
                   child: Text(
-                    message.message,
+                    message.message.split("~")[1],
                     softWrap: true,
                   ),
                 ) :
@@ -275,12 +275,22 @@ class _ChatViewState extends ConsumerState<ChatView> {
                 Text(
                   message.name
                 ),
+                message.message.split("~")[0] == "TEKSTO" ?
                 Container(
                   margin: const EdgeInsets.only(top: 5.0),
-                  child: Text(message.message,
-                    textAlign: TextAlign.end,
+                  child: Text(
+                    message.message.split("~")[1],
+                    softWrap: true,
                   ),
-                ),
+                ) :
+                Container(
+                  margin: const EdgeInsets.only(top: 5.0),
+                  child: Image.network(
+                    message.message.split("~")[1],
+                    width: 200,
+                    height: 200,
+                  ),
+                )
               ],
             ),
           ),

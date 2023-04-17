@@ -7,12 +7,12 @@ import 'AuthService.dart';
 class FirestoreService{
   var instance = FirebaseFirestore.instance;
 
-  void createUser(id){
+  void createUser(id, name, address){
     instance.collection("Users").doc(id).set({
-      "Name" : "No name",
+      "Name" : name,
       "Image": "",
       "Contact" : "",
-      "Address" : "No Data%NCR%Caloocan",
+      "Address" : address,
       "Type" : "Buyer",
       "Orders" : [],
       "Cart": [],

@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:no_screenshot/no_screenshot.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:qcu/common/settings/PrivacyView.dart';
 import 'package:qcu/cosntants/colors.dart';
 import 'package:qcu/features/Admins/dashboard/aDashboardView.dart';
 import 'package:qcu/features/Sellers/orders/sOrdersView.dart';
@@ -149,11 +151,28 @@ class _AppNavBarState extends ConsumerState<AppNavBar>{
     ];
   }
 
+  void showPolicy()async{
+    await Future.delayed(const Duration(seconds: 2));
+    showDialog(context: context, builder: (builder){
+      return Center(
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: 500,
+            child: PrivacyView()
+          ),
+        ),
+      );
+    });
+  }
+
 
   @override
   void initState() {
-   // BorzoService().makeRequest();
-    print("Borzo");
+    showPolicy();
     super.initState();
   }
 

@@ -1,16 +1,37 @@
-# qcu
+<img src="/assets/images/QCUlogo.jpg" height="200">
 
-A new Flutter project.
+# LutoJuan Mobile
 
-## Getting Started
+In collaboration with LS Quad C Co., we've developed a seamless platform that offers a wide range of features designed to make your shopping experience faster, more convenient, and more secure than ever before.
 
-This project is a starting point for a Flutter application.
+## Screenshots
 
-A few resources to get you started if this is your first Flutter project:
+<img src="/assets/images/screenshot.png" height="450">
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## 🧐 Features
+
+Here're some of the project's best features:
+
+- Buy items from organizations & businesses near Quezon City University
+- Sell items to students & faculty members of Quezon City University
+- Order Tracking
+- Borzo API Integration
+- Inventory Management
+- Admin Dashboard
+
+
+
+## 💻 Built with
+
+Technologies used in the project:
+
+*   Flutter
+*   Firebase
+*   Borzo API
+*   Admob
+
+
+
+## Developed by: Edison Modesto

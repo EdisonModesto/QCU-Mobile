@@ -1,6 +1,6 @@
 <img src="/assets/images/QCUlogo.jpg" height="200">
 
-# LutoJuan Mobile
+# QCU Mobile
 
 In collaboration with LS Quad C Co., we've developed a seamless platform that offers a wide range of features designed to make your shopping experience faster, more convenient, and more secure than ever before.
 

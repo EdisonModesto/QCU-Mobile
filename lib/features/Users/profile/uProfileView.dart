@@ -453,7 +453,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                                 IconButton(
                                                   onPressed: (){
                                                     showDialog(context: context, builder: (builder){
-                                                      return CancelDialog(orderID: toPay[index].id,);
+                                                      return CancelDialog(orderID: toPay[index].id, userID: toPay[index].data()["User"],);
                                                     });
                                                   },
                                                   icon: const Icon(Icons.cancel_outlined),
@@ -652,7 +652,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                                 const SizedBox(width: 10),
                                                 IconButton(
                                                   onPressed:(){
-                                                    FirestoreService().updateOrderStatus(forPickup[index].id, "3");
+                                                    FirestoreService().updateOrderStatus(forPickup[index].id, "3", forPickup[index].data()["User"]);
                                                   },
                                                   icon: const Icon(
                                                     CupertinoIcons.cube_box,

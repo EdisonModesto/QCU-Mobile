@@ -8,10 +8,13 @@ import '../../cosntants/colors.dart';
 class CancelDialog extends ConsumerWidget {
   const CancelDialog({
     required this.orderID,
+    required this.userID,
+
     Key? key,
   }) : super(key: key);
 
   final String orderID;
+  final String userID;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -60,7 +63,7 @@ class CancelDialog extends ConsumerWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        FirestoreService().cancelOrder(orderID);
+                        FirestoreService().cancelOrder(orderID, userID);
                         Navigator.of(context).pop();
                       },
                       child: Text(

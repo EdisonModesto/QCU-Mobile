@@ -7,6 +7,7 @@ import 'package:qcu/services/AuthService.dart';
 import 'package:qcu/services/ChatService.dart';
 import 'package:qcu/services/FilePickerService.dart';
 import 'package:qcu/services/FirestoreService.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../features/ViewModels/UserViewModel.dart';
 import 'MessageModel.dart';
@@ -109,11 +110,32 @@ class _ChatViewState extends ConsumerState<ChatView> {
               icon: const Icon(Icons.image),
               onPressed: () async {
                 var url = await FilePickerService().pickImage();
-                ChatService().sendMessage(
-                  Message(id: AuthService().getID(), name: name, message: "IMAHE~$url", time: DateTime.now()),
-                  widget.buyer,
-                  widget.seller,
-                );
+                if(url != null) {
+                  ChatService().sendMessage(
+                    Message(id: AuthService().getID(),
+                        name: name,
+                        message: "IMAHE~$url",
+                        time: DateTime.now()),
+                    widget.buyer,
+                    widget.seller,
+                  );
+                }
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.attach_file),
+              onPressed: () async {
+                var url = await FilePickerService().pickFile();
+                if(url != null) {
+                  ChatService().sendMessage(
+                    Message(id: AuthService().getID(),
+                        name: name,
+                        message: "ANYTPE~$url",
+                        time: DateTime.now()),
+                    widget.buyer,
+                    widget.seller,
+                  );
+                }
               },
             ),
             IconButton(
@@ -252,7 +274,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
                     message.message.split("~")[1],
                     softWrap: true,
                   ),
-                ) :
+                ) : message.message.split("~")[0] == "IMAHE" ?
                 Container(
                   margin: const EdgeInsets.only(top: 5.0),
                   child: Image.network(
@@ -260,7 +282,30 @@ class _ChatViewState extends ConsumerState<ChatView> {
                     width: 200,
                     height: 200,
                   ),
-                )
+                ) : Container(
+                  margin: const EdgeInsets.only(top: 5.0),
+                  child: InkWell(
+                    onTap: (){
+                      launchUrl(Uri.parse(message.message.split("~")[1]));
+                    },
+                    child: Row(
+                      children: [
+                        const Icon(Icons.attach_file),
+                        Text(
+                          "Attachment",
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),)
+                 /*
+                  Image.network(
+                    message.message.split("~")[1],
+                    width: 200,
+                    height: 200,
+                  ),*/
               ],
             ),
           ),
@@ -282,13 +327,32 @@ class _ChatViewState extends ConsumerState<ChatView> {
                     message.message.split("~")[1],
                     softWrap: true,
                   ),
-                ) :
+                ) : message.message.split("~")[0] == "IMAHE" ?
                 Container(
                   margin: const EdgeInsets.only(top: 5.0),
                   child: Image.network(
                     message.message.split("~")[1],
                     width: 200,
                     height: 200,
+                  ),
+                ) : Container(
+                  margin: const EdgeInsets.only(top: 5.0),
+                  child: InkWell(
+                    onTap: (){
+                      launchUrl(Uri.parse(message.message.split("~")[1]));
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        const Icon(Icons.attach_file),
+                        Text(
+                          "Attachment",
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 )
               ],

@@ -159,10 +159,13 @@ class _AppNavBarState extends ConsumerState<AppNavBar>{
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
-            height: 500,
-            child: PrivacyView()
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: 600,
+              child: PrivacyView()
+            ),
           ),
         ),
       );

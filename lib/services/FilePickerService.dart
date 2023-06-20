@@ -7,7 +7,28 @@ import 'CloudService.dart';
 
 class FilePickerService{
   Future<String> pickImage() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: false,
+    );
+    var url = "";
+
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      //Uint8List? fileBytes = result.files.single.bytes;
+      String fileName = result.files.first.name;
+
+      // Upload file
+      url = await CloudService().addItemImage(fileName, file);
+    }
+    return url;
+  }
+
+  Future<String> pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.any,
+      allowMultiple: false,
+    );
     var url = "";
 
     if (result != null) {

@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:qcu/cosntants/colors.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PrivacyView extends ConsumerStatefulWidget {
@@ -40,7 +44,7 @@ class _PrivacyViewState extends ConsumerState<PrivacyView> {
           },
         ),
       )
-      ..loadRequest(Uri.parse('https://docs.google.com/document/d/1aVNcGCtMvDZlT5tkIWwNjFTwv7NbYmcu/edit'));
+      ..loadRequest(Uri.parse('https://docs.google.com/document/d/1aVNcGCtMvDZlT5tkIWwNjFTwv7NbYmcu/view'));
     super.initState();
   }
 
@@ -48,8 +52,48 @@ class _PrivacyViewState extends ConsumerState<PrivacyView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: WebViewWidget(
-              controller: controller,
+          child: Column(
+            children: [
+              Expanded(
+                child: WebViewWidget(
+                    controller: controller,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      child:  Text(
+                        "Cancel",
+                        style: GoogleFonts.poppins(
+                          color:const Color(0xff414141),
+                          fontSize: 16,
+                        )
+                      ),
+                      onPressed: (){
+                        exit(0);
+                      },
+                    ),
+                    TextButton(
+                      child: Text(
+                        "I Accept",
+                        style: GoogleFonts.poppins(
+                          color: AppColors().primary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      onPressed: (){
+
+                        Navigator.pop(context);
+                      },
+                    )
+                  ]
+                ),
+              )
+            ],
           )
       ),
     );

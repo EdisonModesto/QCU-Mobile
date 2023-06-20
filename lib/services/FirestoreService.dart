@@ -157,16 +157,29 @@ class FirestoreService{
       });
     }
 
+    addNotification(AuthService().getID(), "Order has been placed", DateTime.now(), "Track your order at the Orders tab");
+
   }
 
-  void updateOrderStatus(id, status){
+  void updateOrderStatus(id, status, user){
     FirebaseFirestore.instance.collection("Orders").doc(id).update({
       "Status": status,
     });
+    addNotification(user, "Order status has been updated", DateTime.now(), "Check your order at the Orders tab");
   }
 
-  void cancelOrder(id){
+  void cancelOrder(id, user){
     FirebaseFirestore.instance.collection("Orders").doc(id).delete();
+    addNotification(user, "Order has been cancelled", DateTime.now(), "Check your order at the Orders tab");
+
+  }
+
+  void addNotification(id, name, date, message){
+    FirebaseFirestore.instance.collection("Users").doc(id).collection("Notifications").doc().set({
+      "Name" : name,
+      "Date" : date,
+      "Message" : message,
+    });
   }
 
 }

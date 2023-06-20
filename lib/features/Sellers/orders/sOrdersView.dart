@@ -224,7 +224,7 @@ class _SOrdersViewState extends ConsumerState<SOrdersView> {
                                             const SizedBox(width: 10),
                                             IconButton(
                                               onPressed:(){
-                                                FirestoreService().updateOrderStatus(toPay[index].id, "1");
+                                                FirestoreService().updateOrderStatus(toPay[index].id, "1", toPay[index].data()["User"]);
                                               },
                                               icon: const Icon(
                                                 CupertinoIcons.upload_circle,
@@ -331,7 +331,7 @@ class _SOrdersViewState extends ConsumerState<SOrdersView> {
                                             const SizedBox(width: 10),
                                             IconButton(
                                               onPressed:(){
-                                                FirestoreService().updateOrderStatus(preparing[index].id, "2");
+                                                FirestoreService().updateOrderStatus(preparing[index].id, "2", preparing[index].data()["User"]);
                                               },
                                               icon: const Icon(
                                                 CupertinoIcons.upload_circle,

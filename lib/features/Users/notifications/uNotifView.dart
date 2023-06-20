@@ -4,6 +4,9 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:go_router/go_router.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:modal_bottom_sheet/modal_bottom_sheet.dart";
+import "package:qcu/features/Users/notifications/NotifViewmode.dart";
+import "package:qcu/services/AuthService.dart";
+import "package:qcu/services/FirestoreService.dart";
 
 import "../../../common/cart/CartView.dart";
 import "../../../cosntants/colors.dart";
@@ -22,6 +25,7 @@ class _NotifViewState extends ConsumerState<NotifView> {
   @override
   Widget build(BuildContext context) {
     var authState = ref.watch(authStateProvider);
+    var notifData = ref.watch(notifProvider);
     return authState.when(
       data: (data){
         return Container(
@@ -34,10 +38,20 @@ class _NotifViewState extends ConsumerState<NotifView> {
                   children: [
                     Row(
                       children: [
-                        const CircleAvatar(
-                          backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
-                          backgroundColor: Colors.transparent,
+                        InkWell(
+                          onTap: () {
+                            FirestoreService().addNotification(
+                              AuthService().getID(),
+                              "Test notification",
+                              DateTime.now(),
+                              "This is a test notification",
+                            );
+                          },
+                          child: const CircleAvatar(
+                            backgroundImage: AssetImage("assets/images/QCUlogo.jpg"),
+                            backgroundColor: Colors.transparent,
 
+                          ),
                         ),
                         const SizedBox(width: 20,),
                         Text(
@@ -85,51 +99,68 @@ class _NotifViewState extends ConsumerState<NotifView> {
                 ),
                 const SizedBox(height: 10,),
                 Expanded(
-                  child: data?.uid != null ?
-                  ListView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: 10,
-                    itemBuilder: (context, index){
-                      return ListTile(
-                        leading: const Icon(
-                          Icons.notifications_active_outlined,
-                        ),
-                        title: Text(
-                          "Notification $index",
+                  child: notifData.when(
+                    data: (notData){
+
+                      return data?.uid != null ?
+
+                       ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemCount: notData.docs.length,
+                        itemBuilder: (context, index){
+                          return ListTile(
+                            leading: const Icon(
+                              Icons.notifications_active_outlined,
+                            ),
+                            title: Text(
+                              notData.docs[index]["Name"],
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
+                            subtitle: Text(
+                              notData.docs[index]["Message"],
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          );
+                        },
+                      ) : Center(
+                        child: Text(
+                          "You are not logged in",
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: Colors.black,
                           ),
                         ),
-                        subtitle: Text(
-                          "This is a notification",
+                      );
+                    },
+                    error: (error, stack){
+                      return Center(
+                        child: Text(
+                          "Error: $error",
                           style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        trailing: Text(
-                          ">",
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
                             color: Colors.black,
                           ),
                         ),
                       );
                     },
-                  ) : Center(
-                    child: Text(
-                      "You are not logged in",
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                      ),
-                    ),
+                    loading: (){
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
                   ),
+
+
                 )
               ]
           ),
